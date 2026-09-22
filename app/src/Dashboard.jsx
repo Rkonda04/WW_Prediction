@@ -1,44 +1,19 @@
 import { useEffect, useMemo, useState } from 'react'
 import bundle from './data/predictions.json'
-import Alerts from './components/Alerts'
 import Controls from './components/Controls'
-import ErrorAnalysis from './components/ErrorAnalysis'
 import FlowForecast from './components/FlowForecast'
-import KeyMetrics from './components/KeyMetrics'
-import Performance from './components/Performance'
-import SaturationState from './components/SaturationState'
-import { useTheme } from './components/ui'
-import { cssVar } from './lib/metrics'
+import { Card, useTheme } from './components/ui'
+import { cssVar, fmt } from './lib/metrics'
 
-const {
-  predictions,
-  metrics,
-  model,
-  validation,
-  saturation_history: saturationHistory,
-  generated_at: generatedAt,
-} = bundle
+const { predictions, model } = bundle
 
-const MIN_DATE = predictions[0].date
 const MAX_DATE = predictions[predictions.length - 1].date
 
-/** Shift an ISO date by a whole number of days, staying in UTC. */
-function shiftDate(iso, days) {
-  const d = new Date(`${iso}T00:00:00Z`)
-  d.setUTCDate(d.getUTCDate() + days)
-  return d.toISOString().slice(0, 10)
-}
-
-function presetRange(key) {
-  if (key === 'all') return { from: MIN_DATE, to: MAX_DATE }
-  const from = shiftDate(MAX_DATE, -(Number(key) - 1))
-  return { from: from < MIN_DATE ? MIN_DATE : from, to: MAX_DATE }
-}
+// Newest first, so the dropdown opens on the most recent day.
+const DAY_OPTIONS = predictions.map((r) => r.date).reverse()
 
 export default function Dashboard() {
   const [dark, setDark] = useTheme()
-  const [preset, setPreset] = useState('60')
-  const [range, setRange] = useState(() => presetRange('60'))
   const [showBands, setShowBands] = useState(true)
   const [selectedDate, setSelectedDate] = useState(MAX_DATE)
 
@@ -49,39 +24,6 @@ export default function Dashboard() {
     setTheme(readTheme())
   }, [dark])
 
-  const applyPreset = (key) => {
-    setPreset(key)
-    setRange(presetRange(key))
-  }
-
-  const applyRange = (next) => {
-    setPreset('custom')
-    setRange(next)
-  }
-
-  const rows = useMemo(
-    () => predictions.filter((r) => r.date >= range.from && r.date <= range.to),
-    [range],
-  )
-
-  // Error analysis keeps its own 90-day window per the panel spec, independent
-  // of the forecast range, but never reaches outside the user's selection.
-  const residualRows = useMemo(() => {
-    const floor = shiftDate(range.to, -89)
-    const from = floor > range.from ? floor : range.from
-    return predictions.filter((r) => r.date >= from && r.date <= range.to)
-  }, [range])
-
-  const dayOptions = useMemo(() => rows.map((r) => r.date).reverse(), [rows])
-
-  // Keep the selected day inside the visible range.
-  useEffect(() => {
-    if (!rows.length) return
-    if (!rows.some((r) => r.date === selectedDate)) {
-      setSelectedDate(rows[rows.length - 1].date)
-    }
-  }, [rows, selectedDate])
-
   const selected = useMemo(
     () => predictions.find((r) => r.date === selectedDate) ?? null,
     [selectedDate],
@@ -90,109 +32,78 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen">
       <header className="border-b border-slate-200 bg-white dark:border-slate-700 dark:bg-surface-dark">
-        <div className="mx-auto flex max-w-[1400px] flex-col gap-1 px-4 py-4 sm:px-6">
-          <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <h1 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
-              RRWWTF Flow Prediction Dashboard
-            </h1>
-            <span className="text-xs text-slate-500 dark:text-slate-400">
-              Richmond Regional WWTF {'·'} Phase 5 model
-            </span>
-          </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            Retrospective view of {model.name} against observed plant flow, with the 14-day
-            soil-saturation state for the same days.
-          </p>
+        <div className="mx-auto flex max-w-[1400px] flex-wrap items-baseline justify-between gap-2 px-4 py-4 sm:px-6">
+          <h1 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+            RRWWTF Flow Prediction Dashboard
+          </h1>
+          <span className="text-xs text-slate-500 dark:text-slate-400">
+            Richmond Regional WWTF {'·'} Phase 5 model
+          </span>
         </div>
       </header>
 
       <main className="mx-auto max-w-[1400px] px-4 py-4 sm:px-6">
         <Controls
-          bounds={{ min: MIN_DATE, max: MAX_DATE }}
-          range={range}
-          onRange={applyRange}
-          preset={preset}
-          onPreset={applyPreset}
           dark={dark}
           onDark={setDark}
           selectedDate={selectedDate}
           onSelectedDate={setSelectedDate}
-          dayOptions={dayOptions}
+          dayOptions={DAY_OPTIONS}
         />
 
-        <KeyMetrics
-          row={selected}
-          isLatest={selectedDate === MAX_DATE}
-          generatedAt={generatedAt.slice(0, 10)}
-        />
+        <PredictedFlow row={selected} isLatest={selectedDate === MAX_DATE} />
 
-        {rows.length === 0 ? (
-          <div className="card mt-4 px-4 py-8 text-center text-sm text-slate-500 dark:text-slate-400">
-            No days fall in the selected range.
-          </div>
-        ) : (
-          <div className="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-3">
-            <div className="xl:col-span-2">
-              <FlowForecast
-                rows={rows}
-                theme={theme}
-                showBands={showBands}
-                onToggleBands={setShowBands}
-              />
-            </div>
-            <SaturationState row={selected} theme={theme} history={saturationHistory} />
-
-            <div className="xl:col-span-2">
-              <ErrorAnalysis rows={residualRows} theme={theme} />
-            </div>
-            <Performance metrics={metrics} model={model} />
-
-            <div className="xl:col-span-2">
-              <Alerts
-                metrics={metrics}
-                model={model}
-                row={selected}
-                validation={validation}
-              />
-            </div>
-            <Sources />
-          </div>
-        )}
+        <div className="mt-4">
+          <FlowForecast
+            rows={predictions}
+            theme={theme}
+            showBands={showBands}
+            onToggleBands={setShowBands}
+            highlightDate={selectedDate}
+          />
+        </div>
       </main>
 
       <footer className="mx-auto max-w-[1400px] px-4 pb-6 text-[11px] text-slate-400 sm:px-6 dark:text-slate-500">
-        Figures recomputed from the model's raw predictions at build time and cross-checked
-        against output/13_screened_model/test_scores.csv.
+        Batch predictions, {model.test_start} to {model.test_end}. Not a live feed.
       </footer>
     </div>
   )
 }
 
-function Sources() {
+function PredictedFlow({ row, isLatest }) {
   return (
-    <section className="card flex flex-col px-4 py-3">
-      <h2 className="card-title">Data sources</h2>
-      <ul className="mt-2 space-y-2 text-[11px] text-slate-500 dark:text-slate-400">
-        {Object.entries(bundle.source_files).map(([k, v]) => (
-          <li key={k}>
-            <div className="font-medium capitalize text-slate-600 dark:text-slate-300">{k}</div>
-            <code className="break-all text-[10px]">{v}</code>
-          </li>
-        ))}
-      </ul>
-      <dl className="mt-3 space-y-1 border-t border-slate-200/70 pt-2.5 text-[11px] dark:border-slate-700/60">
-        {[
-          ['Test days', model.n_test_days],
-          ['Flagged (unscored)', model.n_screened_out],
-          ['Scored days', metrics.all.n],
-        ].map(([k, v]) => (
-          <div key={k} className="flex justify-between gap-3">
-            <dt className="text-slate-500 dark:text-slate-400">{k}</dt>
-            <dd className="font-medium tabular-nums text-slate-700 dark:text-slate-200">{v}</dd>
+    <Card bodyClass="flex flex-wrap items-end justify-between gap-6">
+      <div>
+        <div className="stat-label">{isLatest ? 'Latest predicted flow' : 'Predicted flow'}</div>
+        <div className="mt-1 flex items-baseline gap-2">
+          <span className="text-5xl font-semibold tabular-nums text-primary dark:text-primary-light">
+            {fmt.mgd(row?.predicted)}
+          </span>
+          <span className="text-base font-medium text-slate-500 dark:text-slate-400">MGD</span>
+        </div>
+        <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+          {row ? fmt.date(row.date) : '—'}
+        </div>
+      </div>
+
+      {row && (
+        <dl className="flex gap-8">
+          <div>
+            <dt className="stat-label">Actual</dt>
+            <dd className="mt-1 text-2xl font-semibold tabular-nums text-slate-900 dark:text-slate-50">
+              {fmt.mgd(row.actual)}
+            </dd>
           </div>
-        ))}
-      </dl>
-    </section>
+          <div>
+            <dt className="stat-label">Error</dt>
+            <dd className="mt-1 text-2xl font-semibold tabular-nums text-slate-900 dark:text-slate-50">
+              {fmt.signed(row.error)}
+            </dd>
+          </div>
+        </dl>
+      )}
+    </Card>
   )
 }
 

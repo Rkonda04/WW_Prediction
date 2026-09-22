@@ -4,6 +4,7 @@ import {
   CartesianGrid,
   ComposedChart,
   Line,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -21,7 +22,7 @@ const DAY = 86400000
  * 21 days inside its own span, and a categorical axis would close those gaps and
  * draw a continuous line through days the model never scored.
  */
-export default function FlowForecast({ rows, theme, showBands, onToggleBands }) {
+export default function FlowForecast({ rows, theme, showBands, onToggleBands, highlightDate }) {
   const data = useMemo(
     () =>
       rows.map((r) => ({
@@ -69,7 +70,7 @@ export default function FlowForecast({ rows, theme, showBands, onToggleBands }) 
       actions={<Toggle checked={showBands} onChange={onToggleBands} label="Tolerance band" />}
     >
       <Legend items={legend} />
-      <div className="mt-2 h-[300px] w-full sm:h-[340px]">
+      <div className="mt-2 h-[320px] w-full sm:h-[400px] lg:h-[460px]">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={data} margin={{ top: 8, right: 8, bottom: 4, left: -8 }}>
             <CartesianGrid stroke={theme.grid} strokeDasharray="3 3" vertical={false} />
@@ -101,6 +102,14 @@ export default function FlowForecast({ rows, theme, showBands, onToggleBands }) 
                 style: { fill: theme.axis, fontSize: 11, textAnchor: 'middle' },
               }}
             />
+            {highlightDate && (
+              <ReferenceLine
+                x={Date.parse(`${highlightDate}T00:00:00Z`)}
+                stroke={theme.axis}
+                strokeWidth={1}
+                strokeDasharray="4 3"
+              />
+            )}
             <Tooltip
               content={<FlowTooltip theme={theme} showBands={showBands} />}
               cursor={{ stroke: theme.axis, strokeWidth: 1, strokeDasharray: '3 3' }}
