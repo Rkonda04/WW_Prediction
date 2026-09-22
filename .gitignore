@@ -1,0 +1,44 @@
+# ---------------------------------------------------------------------------
+# Client data and deliverables are deliberately NOT published.
+# This repo holds modeling code and the dashboard only. The pipeline reads its
+# inputs from the local output/ tree, which stays on OneDrive.
+# ---------------------------------------------------------------------------
+raw/
+output/
+*.csv
+*.xlsx
+*.xls
+*.xlsm
+*.docx
+*.doc
+*.pdf
+*.pptx
+*.pkl
+*.db
+*.png
+*.jpg
+*.jpeg
+
+# The dashboard's generated bundle is the one data file that ships: the app
+# cannot render without it.
+!app/src/data/predictions.json
+
+# ---------------------------------------------------------------------------
+# Build artifacts and dependencies
+# ---------------------------------------------------------------------------
+node_modules/
+dist/
+__pycache__/
+*.pyc
+*.pyo
+.vite/
+
+# ---------------------------------------------------------------------------
+# Local tooling and scratch
+# ---------------------------------------------------------------------------
+.claude/
+temp_output.txt
+*.log
+*.local
+.DS_Store
+Thumbs.db

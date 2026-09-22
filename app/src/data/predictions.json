@@ -1,0 +1,4803 @@
+{
+ "generated_at": "2026-09-22T20:11:42+00:00",
+ "source_files": {
+  "predictions": "output/13_screened_model/test_predictions_2024.csv",
+  "scores": "output/13_screened_model/test_scores.csv",
+  "saturation": "output/14_saturation_model/saturation_timeseries.csv"
+ },
+ "model": {
+  "name": "XGBoost Screened (Phase 5)",
+  "protocol": "Screened - flagged days excluded from scoring",
+  "test_start": "2024-01-04",
+  "test_end": "2024-08-28",
+  "saturation_start": "2018-01-01",
+  "saturation_end": "2024-08-31",
+  "n_test_days": 217,
+  "n_screened_out": 3,
+  "n_missing_saturation": 0
+ },
+ "metrics": {
+  "all": {
+   "n": 214,
+   "r2": 0.527456682073222,
+   "rmse": 0.3258727711577437,
+   "mae": 0.21499120401395977,
+   "bias": -0.046714803070242644,
+   "mape": 10.057048283348422,
+   "within_tolerance": 0.7710280373831776,
+   "within_0_1": 0.43457943925233644,
+   "within_0_5": 0.8738317757009346
+  },
+  "rain_wet": {
+   "n": 104,
+   "r2": 0.543494611888288,
+   "rmse": 0.3953163342420842,
+   "mae": 0.275113931758321,
+   "bias": -0.10053547593293945,
+   "mape": 11.713522993140193,
+   "within_tolerance": 0.6826923076923077,
+   "within_0_1": 0.3269230769230769,
+   "within_0_5": 0.7980769230769231
+  },
+  "rain_dry": {
+   "n": 110,
+   "r2": -0.24114875092267707,
+   "rmse": 0.2425754812203165,
+   "mae": 0.15814789778292732,
+   "bias": 0.004170196727216138,
+   "mape": 8.49092673954529,
+   "within_tolerance": 0.8545454545454545,
+   "within_0_1": 0.5363636363636364,
+   "within_0_5": 0.9454545454545454
+  },
+  "sat_wet": {
+   "n": 34,
+   "r2": 0.5763868685761095,
+   "rmse": 0.48675869144243317,
+   "mae": 0.37696677632408976,
+   "bias": -0.1322806005572679,
+   "mape": 15.460049285878744,
+   "within_tolerance": 0.4411764705882353,
+   "within_0_1": 0.23529411764705882,
+   "within_0_5": 0.6764705882352942
+  },
+  "sat_dry": {
+   "n": 180,
+   "r2": 0.24214780275639025,
+   "rmse": 0.2854777542659587,
+   "mae": 0.1843958181331575,
+   "bias": -0.03055237465602675,
+   "mape": 9.036481427314914,
+   "within_tolerance": 0.8333333333333334,
+   "within_0_1": 0.4722222222222222,
+   "within_0_5": 0.9111111111111111
+  },
+  "tolerance_mgd": 0.3,
+  "wet_rain_threshold_in": 0.1
+ },
+ "validation": {
+  "all": {
+   "published_r2": 0.527456682073222,
+   "published_rmse": 0.3258727711577437,
+   "published_n": 214,
+   "recomputed_r2": 0.527456682073222,
+   "recomputed_rmse": 0.3258727711577437,
+   "recomputed_n": 214
+  },
+  "rain_wet": {
+   "published_r2": 0.5434946118882878,
+   "published_rmse": 0.3953163342420843,
+   "published_n": 104,
+   "recomputed_r2": 0.543494611888288,
+   "recomputed_rmse": 0.3953163342420842,
+   "recomputed_n": 104
+  },
+  "rain_dry": {
+   "published_r2": -0.2411487509226768,
+   "published_rmse": 0.2425754812203164,
+   "published_n": 110,
+   "recomputed_r2": -0.24114875092267707,
+   "recomputed_rmse": 0.2425754812203165,
+   "recomputed_n": 110
+  },
+  "published_within_0_3_pct": 77.10280373831776,
+  "published_mape_accuracy_pct": 89.94295171665158
+ },
+ "predictions": [
+  {
+   "date": "2024-01-04",
+   "actual": 2.9781,
+   "predicted": 2.0618,
+   "error": -0.9163,
+   "rain_in": 1.01,
+   "tmin_f": 40.8,
+   "saturation": 0.0681,
+   "classification": "DRY",
+   "sat_confidence": 0.0681,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-01-05",
+   "actual": 2.1907,
+   "predicted": 2.7776,
+   "error": 0.5869,
+   "rain_in": 2.228,
+   "tmin_f": 48.5,
+   "saturation": 0.1209,
+   "classification": "WET",
+   "sat_confidence": 0.1209,
+   "precip_mm": 2.228,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-01-06",
+   "actual": 1.852,
+   "predicted": 1.7505,
+   "error": -0.1015,
+   "rain_in": 0.0,
+   "tmin_f": 40.9,
+   "saturation": 0.1046,
+   "classification": "DRY",
+   "sat_confidence": 0.1046,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-01-07",
+   "actual": 2.7523,
+   "predicted": 1.6006,
+   "error": -1.1518,
+   "rain_in": 0.016,
+   "tmin_f": 41.8,
+   "saturation": 0.0703,
+   "classification": "DRY",
+   "sat_confidence": 0.0703,
+   "precip_mm": 0.016,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-01-08",
+   "actual": 2.213,
+   "predicted": 1.7644,
+   "error": -0.4486,
+   "rain_in": 0.756,
+   "tmin_f": 54.4,
+   "saturation": 0.0898,
+   "classification": "WET",
+   "sat_confidence": 0.0898,
+   "precip_mm": 0.756,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-01-09",
+   "actual": 2.1557,
+   "predicted": 1.5804,
+   "error": -0.5753,
+   "rain_in": 0.047,
+   "tmin_f": 40.6,
+   "saturation": 0.0892,
+   "classification": "DRY",
+   "sat_confidence": 0.0892,
+   "precip_mm": 0.047,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-01-10",
+   "actual": 2.1452,
+   "predicted": 1.6006,
+   "error": -0.5447,
+   "rain_in": 0.0,
+   "tmin_f": 37.1,
+   "saturation": 0.0891,
+   "classification": "DRY",
+   "sat_confidence": 0.0891,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-01-11",
+   "actual": 1.912,
+   "predicted": 1.6254,
+   "error": -0.2866,
+   "rain_in": 0.024,
+   "tmin_f": 53.1,
+   "saturation": 0.0898,
+   "classification": "DRY",
+   "sat_confidence": 0.0898,
+   "precip_mm": 0.024,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-01-12",
+   "actual": 1.8854,
+   "predicted": 1.5803,
+   "error": -0.305,
+   "rain_in": 0.043,
+   "tmin_f": 40.5,
+   "saturation": 0.0897,
+   "classification": "DRY",
+   "sat_confidence": 0.0897,
+   "precip_mm": 0.043,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-01-13",
+   "actual": 1.7261,
+   "predicted": 1.5959,
+   "error": -0.1302,
+   "rain_in": 0.0,
+   "tmin_f": 35.4,
+   "saturation": 0.0894,
+   "classification": "DRY",
+   "sat_confidence": 0.0894,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-01-14",
+   "actual": 2.4291,
+   "predicted": 1.6149,
+   "error": -0.8142,
+   "rain_in": 0.0,
+   "tmin_f": 32.6,
+   "saturation": 0.0903,
+   "classification": "DRY",
+   "sat_confidence": 0.0903,
+   "precip_mm": 0.0,
+   "screened_out": true,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-01-18",
+   "actual": 1.9052,
+   "predicted": 2.2134,
+   "error": 0.3082,
+   "rain_in": 0.0,
+   "tmin_f": 47.8,
+   "saturation": 0.0496,
+   "classification": "DRY",
+   "sat_confidence": 0.0496,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-01-19",
+   "actual": 1.5512,
+   "predicted": 2.0992,
+   "error": 0.548,
+   "rain_in": 0.0,
+   "tmin_f": 38.7,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-01-20",
+   "actual": 1.6309,
+   "predicted": 1.8408,
+   "error": 0.2099,
+   "rain_in": 0.0,
+   "tmin_f": 30.6,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-01-21",
+   "actual": 1.8314,
+   "predicted": 1.7045,
+   "error": -0.1269,
+   "rain_in": 0.04,
+   "tmin_f": 37.0,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.028,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-01-22",
+   "actual": 3.649,
+   "predicted": 2.3317,
+   "error": -1.3173,
+   "rain_in": 2.283,
+   "tmin_f": 47.7,
+   "saturation": 0.034,
+   "classification": "DRY",
+   "sat_confidence": 0.034,
+   "precip_mm": 2.283,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-01-23",
+   "actual": 3.297,
+   "predicted": 3.238,
+   "error": -0.059,
+   "rain_in": 1.705,
+   "tmin_f": 61.2,
+   "saturation": 0.078,
+   "classification": "WET",
+   "sat_confidence": 0.078,
+   "precip_mm": 1.705,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-01-24",
+   "actual": 4.4297,
+   "predicted": 3.3228,
+   "error": -1.1069,
+   "rain_in": 1.748,
+   "tmin_f": 60.9,
+   "saturation": 0.1233,
+   "classification": "WET",
+   "sat_confidence": 0.1233,
+   "precip_mm": 1.748,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-01-25",
+   "actual": 2.4384,
+   "predicted": 3.0415,
+   "error": 0.6031,
+   "rain_in": 1.205,
+   "tmin_f": 54.7,
+   "saturation": 0.1523,
+   "classification": "WET",
+   "sat_confidence": 0.1523,
+   "precip_mm": 1.205,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-01-26",
+   "actual": 3.1741,
+   "predicted": 3.039,
+   "error": -0.1351,
+   "rain_in": 1.4,
+   "tmin_f": 50.2,
+   "saturation": 0.1588,
+   "classification": "WET",
+   "sat_confidence": 0.1588,
+   "precip_mm": 0.205,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-01-27",
+   "actual": 2.0519,
+   "predicted": 2.3353,
+   "error": 0.2834,
+   "rain_in": 0.004,
+   "tmin_f": 47.8,
+   "saturation": 0.1595,
+   "classification": "DRY",
+   "sat_confidence": 0.1595,
+   "precip_mm": 0.004,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-01-28",
+   "actual": 1.8655,
+   "predicted": 2.1019,
+   "error": 0.2365,
+   "rain_in": 0.0,
+   "tmin_f": 41.9,
+   "saturation": 0.1585,
+   "classification": "DRY",
+   "sat_confidence": 0.1585,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-01-29",
+   "actual": 1.9104,
+   "predicted": 2.0957,
+   "error": 0.1852,
+   "rain_in": 0.0,
+   "tmin_f": 38.1,
+   "saturation": 0.1545,
+   "classification": "DRY",
+   "sat_confidence": 0.1545,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-01-30",
+   "actual": 1.8378,
+   "predicted": 1.8899,
+   "error": 0.0522,
+   "rain_in": 0.0,
+   "tmin_f": 45.3,
+   "saturation": 0.1534,
+   "classification": "DRY",
+   "sat_confidence": 0.1534,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-01-31",
+   "actual": 1.8307,
+   "predicted": 1.92,
+   "error": 0.0893,
+   "rain_in": 0.0,
+   "tmin_f": 45.7,
+   "saturation": 0.1525,
+   "classification": "DRY",
+   "sat_confidence": 0.1525,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-02-01",
+   "actual": 1.8138,
+   "predicted": 1.9055,
+   "error": 0.0917,
+   "rain_in": 0.0,
+   "tmin_f": 48.8,
+   "saturation": 0.1517,
+   "classification": "DRY",
+   "sat_confidence": 0.1517,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-02-02",
+   "actual": 3.167,
+   "predicted": 2.2035,
+   "error": -0.9635,
+   "rain_in": 1.5,
+   "tmin_f": 56.0,
+   "saturation": 0.1596,
+   "classification": "WET",
+   "sat_confidence": 0.1596,
+   "precip_mm": 0.299,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-02-03",
+   "actual": 2.9007,
+   "predicted": 2.8213,
+   "error": -0.0794,
+   "rain_in": 1.067,
+   "tmin_f": 54.0,
+   "saturation": 0.1866,
+   "classification": "WET",
+   "sat_confidence": 0.1866,
+   "precip_mm": 1.067,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-02-04",
+   "actual": 2.5622,
+   "predicted": 2.1699,
+   "error": -0.3923,
+   "rain_in": 0.0,
+   "tmin_f": 51.9,
+   "saturation": 0.1832,
+   "classification": "DRY",
+   "sat_confidence": 0.1832,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-02-05",
+   "actual": 2.4724,
+   "predicted": 2.1344,
+   "error": -0.338,
+   "rain_in": 0.02,
+   "tmin_f": 53.1,
+   "saturation": 0.1246,
+   "classification": "DRY",
+   "sat_confidence": 0.1246,
+   "precip_mm": 0.02,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-02-06",
+   "actual": 3.7636,
+   "predicted": 2.1444,
+   "error": -1.6192,
+   "rain_in": 0.0,
+   "tmin_f": 44.5,
+   "saturation": 0.0801,
+   "classification": "DRY",
+   "sat_confidence": 0.0801,
+   "precip_mm": 0.0,
+   "screened_out": true,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-02-12",
+   "actual": 1.9013,
+   "predicted": 2.0169,
+   "error": 0.1156,
+   "rain_in": 0.02,
+   "tmin_f": 43.6,
+   "saturation": 0.0128,
+   "classification": "DRY",
+   "sat_confidence": 0.0128,
+   "precip_mm": 0.02,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-02-13",
+   "actual": 3.0214,
+   "predicted": 1.9174,
+   "error": -1.104,
+   "rain_in": 0.0,
+   "tmin_f": 41.6,
+   "saturation": 0.0128,
+   "classification": "DRY",
+   "sat_confidence": 0.0128,
+   "precip_mm": 0.0,
+   "screened_out": true,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-02-18",
+   "actual": 2.5748,
+   "predicted": 1.8293,
+   "error": -0.7455,
+   "rain_in": 0.0,
+   "tmin_f": 35.5,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-02-19",
+   "actual": 1.8693,
+   "predicted": 2.0085,
+   "error": 0.1392,
+   "rain_in": 0.0,
+   "tmin_f": 38.7,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-02-20",
+   "actual": 1.6908,
+   "predicted": 1.9957,
+   "error": 0.3049,
+   "rain_in": 0.0,
+   "tmin_f": 47.0,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-02-21",
+   "actual": 1.8808,
+   "predicted": 2.0008,
+   "error": 0.1199,
+   "rain_in": 0.004,
+   "tmin_f": 57.3,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.004,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-02-22",
+   "actual": 1.7552,
+   "predicted": 1.8426,
+   "error": 0.0874,
+   "rain_in": 0.02,
+   "tmin_f": 62.5,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.02,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-02-23",
+   "actual": 2.3064,
+   "predicted": 1.8676,
+   "error": -0.4387,
+   "rain_in": 0.0,
+   "tmin_f": 57.5,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-02-24",
+   "actual": 1.4755,
+   "predicted": 1.9391,
+   "error": 0.4636,
+   "rain_in": 0.0,
+   "tmin_f": 52.4,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-02-25",
+   "actual": 1.8508,
+   "predicted": 1.8573,
+   "error": 0.0065,
+   "rain_in": 0.0,
+   "tmin_f": 54.4,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-02-26",
+   "actual": 1.672,
+   "predicted": 1.8575,
+   "error": 0.1856,
+   "rain_in": 0.0,
+   "tmin_f": 63.7,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-02-27",
+   "actual": 1.6517,
+   "predicted": 1.7949,
+   "error": 0.1432,
+   "rain_in": 0.0,
+   "tmin_f": 68.1,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-02-28",
+   "actual": 1.6926,
+   "predicted": 1.7683,
+   "error": 0.0757,
+   "rain_in": 0.024,
+   "tmin_f": 52.4,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.024,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-02-29",
+   "actual": 1.3507,
+   "predicted": 1.7664,
+   "error": 0.4157,
+   "rain_in": 0.126,
+   "tmin_f": 50.7,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.126,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-03-01",
+   "actual": 1.9219,
+   "predicted": 1.6376,
+   "error": -0.2843,
+   "rain_in": 0.106,
+   "tmin_f": 49.3,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.106,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-03-02",
+   "actual": 1.7505,
+   "predicted": 1.7576,
+   "error": 0.0072,
+   "rain_in": 0.012,
+   "tmin_f": 52.9,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.012,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-03-03",
+   "actual": 1.749,
+   "predicted": 1.8195,
+   "error": 0.0705,
+   "rain_in": 0.016,
+   "tmin_f": 56.9,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.016,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-03-04",
+   "actual": 1.875,
+   "predicted": 1.8527,
+   "error": -0.0223,
+   "rain_in": 0.122,
+   "tmin_f": 66.2,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.122,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-03-05",
+   "actual": 1.7117,
+   "predicted": 1.8527,
+   "error": 0.141,
+   "rain_in": 0.004,
+   "tmin_f": 65.2,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.004,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-03-06",
+   "actual": 1.7962,
+   "predicted": 1.8267,
+   "error": 0.0305,
+   "rain_in": 0.024,
+   "tmin_f": 63.1,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.024,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-03-07",
+   "actual": 1.6715,
+   "predicted": 1.8454,
+   "error": 0.1739,
+   "rain_in": 0.039,
+   "tmin_f": 61.8,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.039,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-03-08",
+   "actual": 1.5839,
+   "predicted": 1.8141,
+   "error": 0.2302,
+   "rain_in": 0.323,
+   "tmin_f": 68.3,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.323,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-03-09",
+   "actual": 1.778,
+   "predicted": 1.7772,
+   "error": -0.0008,
+   "rain_in": 0.0,
+   "tmin_f": 49.1,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-03-10",
+   "actual": 1.1537,
+   "predicted": 1.7494,
+   "error": 0.5958,
+   "rain_in": 0.0,
+   "tmin_f": 46.5,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-03-11",
+   "actual": 1.5864,
+   "predicted": 1.6044,
+   "error": 0.018,
+   "rain_in": 0.004,
+   "tmin_f": 50.5,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.004,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-03-12",
+   "actual": 1.5926,
+   "predicted": 1.5484,
+   "error": -0.0442,
+   "rain_in": 0.0,
+   "tmin_f": 54.2,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-03-13",
+   "actual": 1.7456,
+   "predicted": 1.5328,
+   "error": -0.2129,
+   "rain_in": 0.028,
+   "tmin_f": 62.9,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.028,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-03-14",
+   "actual": 1.779,
+   "predicted": 1.7274,
+   "error": -0.0516,
+   "rain_in": 0.181,
+   "tmin_f": 66.6,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.181,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-03-15",
+   "actual": 2.5777,
+   "predicted": 1.9244,
+   "error": -0.6533,
+   "rain_in": 1.01,
+   "tmin_f": 67.5,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.15,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-03-16",
+   "actual": 2.063,
+   "predicted": 1.9144,
+   "error": -0.1486,
+   "rain_in": 0.185,
+   "tmin_f": 66.3,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.185,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-03-17",
+   "actual": 1.9642,
+   "predicted": 1.9634,
+   "error": -0.0008,
+   "rain_in": 0.484,
+   "tmin_f": 65.0,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.484,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-03-18",
+   "actual": 1.7843,
+   "predicted": 1.9876,
+   "error": 0.2033,
+   "rain_in": 0.173,
+   "tmin_f": 55.3,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.173,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-03-19",
+   "actual": 1.9822,
+   "predicted": 1.8367,
+   "error": -0.1454,
+   "rain_in": 0.047,
+   "tmin_f": 45.9,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.047,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-03-20",
+   "actual": 1.8687,
+   "predicted": 1.8848,
+   "error": 0.0161,
+   "rain_in": 0.04,
+   "tmin_f": 51.2,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-03-21",
+   "actual": 3.203,
+   "predicted": 2.1395,
+   "error": -1.0634,
+   "rain_in": 1.437,
+   "tmin_f": 60.9,
+   "saturation": 0.0327,
+   "classification": "DRY",
+   "sat_confidence": 0.0327,
+   "precip_mm": 1.437,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-03-22",
+   "actual": 2.3029,
+   "predicted": 2.1057,
+   "error": -0.1973,
+   "rain_in": 0.063,
+   "tmin_f": 61.1,
+   "saturation": 0.0251,
+   "classification": "DRY",
+   "sat_confidence": 0.0251,
+   "precip_mm": 0.063,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-03-23",
+   "actual": 1.9951,
+   "predicted": 1.9792,
+   "error": -0.0159,
+   "rain_in": 0.0,
+   "tmin_f": 54.3,
+   "saturation": 0.0245,
+   "classification": "DRY",
+   "sat_confidence": 0.0245,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-03-24",
+   "actual": 1.8266,
+   "predicted": 2.0257,
+   "error": 0.1991,
+   "rain_in": 0.03,
+   "tmin_f": 58.3,
+   "saturation": 0.0245,
+   "classification": "DRY",
+   "sat_confidence": 0.0245,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-03-25",
+   "actual": 2.008,
+   "predicted": 1.9372,
+   "error": -0.0708,
+   "rain_in": 0.094,
+   "tmin_f": 58.7,
+   "saturation": 0.0266,
+   "classification": "DRY",
+   "sat_confidence": 0.0266,
+   "precip_mm": 0.094,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-03-26",
+   "actual": 1.5523,
+   "predicted": 1.8984,
+   "error": 0.3461,
+   "rain_in": 0.0,
+   "tmin_f": 51.5,
+   "saturation": 0.0255,
+   "classification": "DRY",
+   "sat_confidence": 0.0255,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-03-27",
+   "actual": 1.5403,
+   "predicted": 1.7882,
+   "error": 0.2478,
+   "rain_in": 0.016,
+   "tmin_f": 49.7,
+   "saturation": 0.0263,
+   "classification": "DRY",
+   "sat_confidence": 0.0263,
+   "precip_mm": 0.016,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-03-28",
+   "actual": 1.7663,
+   "predicted": 1.7397,
+   "error": -0.0265,
+   "rain_in": 0.0,
+   "tmin_f": 48.0,
+   "saturation": 0.0209,
+   "classification": "DRY",
+   "sat_confidence": 0.0209,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-03-29",
+   "actual": 1.6874,
+   "predicted": 1.7152,
+   "error": 0.0277,
+   "rain_in": 0.0,
+   "tmin_f": 57.3,
+   "saturation": 0.015,
+   "classification": "DRY",
+   "sat_confidence": 0.015,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-03-30",
+   "actual": 1.729,
+   "predicted": 1.7744,
+   "error": 0.0454,
+   "rain_in": 0.0,
+   "tmin_f": 59.1,
+   "saturation": 0.0092,
+   "classification": "DRY",
+   "sat_confidence": 0.0092,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-03-31",
+   "actual": 1.4547,
+   "predicted": 1.7594,
+   "error": 0.3047,
+   "rain_in": 0.051,
+   "tmin_f": 63.2,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.051,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-04-01",
+   "actual": 1.7842,
+   "predicted": 1.6973,
+   "error": -0.0869,
+   "rain_in": 0.004,
+   "tmin_f": 72.0,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.004,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-04-02",
+   "actual": 2.5735,
+   "predicted": 1.7017,
+   "error": -0.8718,
+   "rain_in": 0.067,
+   "tmin_f": 60.9,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.067,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-04-03",
+   "actual": 2.316,
+   "predicted": 1.8636,
+   "error": -0.4525,
+   "rain_in": 0.0,
+   "tmin_f": 51.5,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-04-04",
+   "actual": 1.6658,
+   "predicted": 1.9376,
+   "error": 0.2717,
+   "rain_in": 0.0,
+   "tmin_f": 51.0,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-04-05",
+   "actual": 1.7799,
+   "predicted": 1.9495,
+   "error": 0.1696,
+   "rain_in": 0.0,
+   "tmin_f": 58.0,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-04-06",
+   "actual": 1.3932,
+   "predicted": 1.8814,
+   "error": 0.4882,
+   "rain_in": 0.0,
+   "tmin_f": 62.1,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-04-07",
+   "actual": 1.9807,
+   "predicted": 1.6983,
+   "error": -0.2824,
+   "rain_in": 0.079,
+   "tmin_f": 68.7,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.079,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-04-08",
+   "actual": 1.9026,
+   "predicted": 1.7428,
+   "error": -0.1597,
+   "rain_in": 0.374,
+   "tmin_f": 69.9,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.374,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-04-09",
+   "actual": 2.2922,
+   "predicted": 2.0369,
+   "error": -0.2553,
+   "rain_in": 1.2,
+   "tmin_f": 68.0,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.48,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-04-10",
+   "actual": 2.2346,
+   "predicted": 2.6445,
+   "error": 0.4099,
+   "rain_in": 1.264,
+   "tmin_f": 63.6,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 1.264,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-04-11",
+   "actual": 1.7457,
+   "predicted": 2.0408,
+   "error": 0.2952,
+   "rain_in": 0.0,
+   "tmin_f": 58.4,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-04-12",
+   "actual": 2.0193,
+   "predicted": 1.9277,
+   "error": -0.0916,
+   "rain_in": 0.0,
+   "tmin_f": 53.9,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-04-13",
+   "actual": 1.779,
+   "predicted": 1.8771,
+   "error": 0.0981,
+   "rain_in": 0.0,
+   "tmin_f": 57.1,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-04-14",
+   "actual": 1.6779,
+   "predicted": 1.7755,
+   "error": 0.0976,
+   "rain_in": 0.0,
+   "tmin_f": 64.0,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-04-15",
+   "actual": 1.7695,
+   "predicted": 1.7671,
+   "error": -0.0024,
+   "rain_in": 0.035,
+   "tmin_f": 66.7,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.035,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-04-16",
+   "actual": 1.8057,
+   "predicted": 1.7564,
+   "error": -0.0493,
+   "rain_in": 0.016,
+   "tmin_f": 70.1,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.016,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-04-17",
+   "actual": 1.8442,
+   "predicted": 1.7619,
+   "error": -0.0823,
+   "rain_in": 0.0,
+   "tmin_f": 71.7,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-04-18",
+   "actual": 1.6874,
+   "predicted": 1.7619,
+   "error": 0.0745,
+   "rain_in": 0.0,
+   "tmin_f": 72.1,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-04-19",
+   "actual": 1.7228,
+   "predicted": 1.7943,
+   "error": 0.0715,
+   "rain_in": 0.512,
+   "tmin_f": 71.1,
+   "saturation": 0.0125,
+   "classification": "DRY",
+   "sat_confidence": 0.0125,
+   "precip_mm": 0.512,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-04-20",
+   "actual": 1.9745,
+   "predicted": 1.951,
+   "error": -0.0235,
+   "rain_in": 1.043,
+   "tmin_f": 63.8,
+   "saturation": 0.0405,
+   "classification": "DRY",
+   "sat_confidence": 0.0405,
+   "precip_mm": 1.043,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-04-21",
+   "actual": 1.8,
+   "predicted": 1.8966,
+   "error": 0.0966,
+   "rain_in": 0.37,
+   "tmin_f": 55.6,
+   "saturation": 0.0479,
+   "classification": "WET",
+   "sat_confidence": 0.0479,
+   "precip_mm": 0.37,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-04-22",
+   "actual": 1.7504,
+   "predicted": 1.7619,
+   "error": 0.0114,
+   "rain_in": 0.0,
+   "tmin_f": 52.9,
+   "saturation": 0.0357,
+   "classification": "DRY",
+   "sat_confidence": 0.0357,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-04-23",
+   "actual": 1.8566,
+   "predicted": 1.7595,
+   "error": -0.0971,
+   "rain_in": 0.0,
+   "tmin_f": 55.4,
+   "saturation": 0.0238,
+   "classification": "DRY",
+   "sat_confidence": 0.0238,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-04-24",
+   "actual": 1.7944,
+   "predicted": 1.7626,
+   "error": -0.0318,
+   "rain_in": 0.008,
+   "tmin_f": 65.5,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.008,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-04-25",
+   "actual": 1.826,
+   "predicted": 1.7587,
+   "error": -0.0674,
+   "rain_in": 0.004,
+   "tmin_f": 67.4,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.004,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-04-26",
+   "actual": 1.7888,
+   "predicted": 1.7627,
+   "error": -0.0261,
+   "rain_in": 0.012,
+   "tmin_f": 72.0,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.012,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-04-27",
+   "actual": 1.8772,
+   "predicted": 1.7636,
+   "error": -0.1137,
+   "rain_in": 0.043,
+   "tmin_f": 72.7,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.043,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-04-28",
+   "actual": 2.0396,
+   "predicted": 2.007,
+   "error": -0.0326,
+   "rain_in": 1.315,
+   "tmin_f": 68.8,
+   "saturation": 0.0316,
+   "classification": "DRY",
+   "sat_confidence": 0.0316,
+   "precip_mm": 1.315,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-04-29",
+   "actual": 2.0622,
+   "predicted": 1.981,
+   "error": -0.0813,
+   "rain_in": 0.193,
+   "tmin_f": 67.1,
+   "saturation": 0.0336,
+   "classification": "DRY",
+   "sat_confidence": 0.0336,
+   "precip_mm": 0.193,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-04-30",
+   "actual": 1.9804,
+   "predicted": 1.8651,
+   "error": -0.1152,
+   "rain_in": 0.071,
+   "tmin_f": 64.7,
+   "saturation": 0.0345,
+   "classification": "DRY",
+   "sat_confidence": 0.0345,
+   "precip_mm": 0.071,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-05-01",
+   "actual": 1.7685,
+   "predicted": 2.3049,
+   "error": 0.5363,
+   "rain_in": 1.154,
+   "tmin_f": 69.5,
+   "saturation": 0.0656,
+   "classification": "WET",
+   "sat_confidence": 0.0656,
+   "precip_mm": 1.154,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-05-02",
+   "actual": 2.3511,
+   "predicted": 2.4558,
+   "error": 0.1047,
+   "rain_in": 2.346,
+   "tmin_f": 71.8,
+   "saturation": 0.1278,
+   "classification": "WET",
+   "sat_confidence": 0.1278,
+   "precip_mm": 2.346,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-05-03",
+   "actual": 1.8857,
+   "predicted": 2.242,
+   "error": 0.3563,
+   "rain_in": 0.996,
+   "tmin_f": 68.7,
+   "saturation": 0.1398,
+   "classification": "WET",
+   "sat_confidence": 0.1398,
+   "precip_mm": 0.996,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-05-04",
+   "actual": 1.8549,
+   "predicted": 1.9452,
+   "error": 0.0904,
+   "rain_in": 0.7,
+   "tmin_f": 70.1,
+   "saturation": 0.1125,
+   "classification": "DRY",
+   "sat_confidence": 0.1125,
+   "precip_mm": 0.031,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-05-05",
+   "actual": 2.8187,
+   "predicted": 1.9998,
+   "error": -0.819,
+   "rain_in": 0.752,
+   "tmin_f": 70.1,
+   "saturation": 0.1231,
+   "classification": "WET",
+   "sat_confidence": 0.1231,
+   "precip_mm": 0.752,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-05-06",
+   "actual": 2.0599,
+   "predicted": 1.9326,
+   "error": -0.1272,
+   "rain_in": 0.004,
+   "tmin_f": 71.7,
+   "saturation": 0.1237,
+   "classification": "DRY",
+   "sat_confidence": 0.1237,
+   "precip_mm": 0.004,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-05-07",
+   "actual": 1.8769,
+   "predicted": 1.9373,
+   "error": 0.0605,
+   "rain_in": 0.114,
+   "tmin_f": 75.1,
+   "saturation": 0.1256,
+   "classification": "WET",
+   "sat_confidence": 0.1256,
+   "precip_mm": 0.114,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-05-08",
+   "actual": 1.8048,
+   "predicted": 1.956,
+   "error": 0.1512,
+   "rain_in": 0.012,
+   "tmin_f": 75.9,
+   "saturation": 0.1249,
+   "classification": "DRY",
+   "sat_confidence": 0.1249,
+   "precip_mm": 0.012,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-05-09",
+   "actual": 2.0527,
+   "predicted": 1.84,
+   "error": -0.2127,
+   "rain_in": 0.02,
+   "tmin_f": 75.4,
+   "saturation": 0.1254,
+   "classification": "DRY",
+   "sat_confidence": 0.1254,
+   "precip_mm": 0.02,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-05-10",
+   "actual": 1.973,
+   "predicted": 1.8673,
+   "error": -0.1057,
+   "rain_in": 0.0,
+   "tmin_f": 74.3,
+   "saturation": 0.1242,
+   "classification": "DRY",
+   "sat_confidence": 0.1242,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-05-11",
+   "actual": 1.8193,
+   "predicted": 1.8774,
+   "error": 0.0582,
+   "rain_in": 0.028,
+   "tmin_f": 69.6,
+   "saturation": 0.1246,
+   "classification": "DRY",
+   "sat_confidence": 0.1246,
+   "precip_mm": 0.028,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-05-12",
+   "actual": 1.9412,
+   "predicted": 2.3756,
+   "error": 0.4344,
+   "rain_in": 1.866,
+   "tmin_f": 71.2,
+   "saturation": 0.1401,
+   "classification": "WET",
+   "sat_confidence": 0.1401,
+   "precip_mm": 1.866,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-05-13",
+   "actual": 2.7813,
+   "predicted": 2.3392,
+   "error": -0.4421,
+   "rain_in": 1.02,
+   "tmin_f": 72.7,
+   "saturation": 0.1511,
+   "classification": "WET",
+   "sat_confidence": 0.1511,
+   "precip_mm": 0.551,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-05-14",
+   "actual": 2.1726,
+   "predicted": 1.9583,
+   "error": -0.2142,
+   "rain_in": 0.0,
+   "tmin_f": 64.6,
+   "saturation": 0.148,
+   "classification": "DRY",
+   "sat_confidence": 0.148,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-05-15",
+   "actual": 1.8623,
+   "predicted": 1.9794,
+   "error": 0.1171,
+   "rain_in": 0.0,
+   "tmin_f": 63.9,
+   "saturation": 0.1151,
+   "classification": "DRY",
+   "sat_confidence": 0.1151,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-05-16",
+   "actual": 2.9427,
+   "predicted": 2.5065,
+   "error": -0.4362,
+   "rain_in": 2.008,
+   "tmin_f": 69.1,
+   "saturation": 0.1051,
+   "classification": "WET",
+   "sat_confidence": 0.1051,
+   "precip_mm": 2.008,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-05-17",
+   "actual": 2.3123,
+   "predicted": 2.1267,
+   "error": -0.1856,
+   "rain_in": 0.32,
+   "tmin_f": 62.0,
+   "saturation": 0.0821,
+   "classification": "DRY",
+   "sat_confidence": 0.0821,
+   "precip_mm": 0.055,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-05-18",
+   "actual": 2.0505,
+   "predicted": 1.9932,
+   "error": -0.0573,
+   "rain_in": 0.0,
+   "tmin_f": 66.8,
+   "saturation": 0.0802,
+   "classification": "DRY",
+   "sat_confidence": 0.0802,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-05-19",
+   "actual": 1.893,
+   "predicted": 2.0397,
+   "error": 0.1467,
+   "rain_in": 0.0,
+   "tmin_f": 68.5,
+   "saturation": 0.0587,
+   "classification": "DRY",
+   "sat_confidence": 0.0587,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-05-20",
+   "actual": 1.9156,
+   "predicted": 1.9401,
+   "error": 0.0246,
+   "rain_in": 0.004,
+   "tmin_f": 70.4,
+   "saturation": 0.0582,
+   "classification": "DRY",
+   "sat_confidence": 0.0582,
+   "precip_mm": 0.004,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-05-21",
+   "actual": 1.9673,
+   "predicted": 1.888,
+   "error": -0.0793,
+   "rain_in": 0.039,
+   "tmin_f": 77.5,
+   "saturation": 0.0557,
+   "classification": "DRY",
+   "sat_confidence": 0.0557,
+   "precip_mm": 0.039,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-05-22",
+   "actual": 1.7898,
+   "predicted": 1.871,
+   "error": 0.0812,
+   "rain_in": 0.024,
+   "tmin_f": 77.5,
+   "saturation": 0.0562,
+   "classification": "DRY",
+   "sat_confidence": 0.0562,
+   "precip_mm": 0.024,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-05-27",
+   "actual": 1.6331,
+   "predicted": 1.7959,
+   "error": 0.1629,
+   "rain_in": 0.012,
+   "tmin_f": 76.6,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.012,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-05-28",
+   "actual": 2.4125,
+   "predicted": 1.8376,
+   "error": -0.5748,
+   "rain_in": 0.642,
+   "tmin_f": 73.6,
+   "saturation": 0.004,
+   "classification": "DRY",
+   "sat_confidence": 0.004,
+   "precip_mm": 0.642,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-05-29",
+   "actual": 1.9546,
+   "predicted": 1.9453,
+   "error": -0.0093,
+   "rain_in": 0.618,
+   "tmin_f": 72.1,
+   "saturation": 0.021,
+   "classification": "DRY",
+   "sat_confidence": 0.021,
+   "precip_mm": 0.618,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-05-30",
+   "actual": 1.9346,
+   "predicted": 2.6713,
+   "error": 0.7367,
+   "rain_in": 2.64,
+   "tmin_f": 72.2,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.846,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-05-31",
+   "actual": 3.2586,
+   "predicted": 2.6737,
+   "error": -0.5849,
+   "rain_in": 1.25,
+   "tmin_f": 70.5,
+   "saturation": 0.0076,
+   "classification": "DRY",
+   "sat_confidence": 0.0076,
+   "precip_mm": 0.752,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-06-01",
+   "actual": 2.87,
+   "predicted": 2.3254,
+   "error": -0.5446,
+   "rain_in": 1.0,
+   "tmin_f": 71.2,
+   "saturation": 0.0228,
+   "classification": "DRY",
+   "sat_confidence": 0.0228,
+   "precip_mm": 0.575,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-06-02",
+   "actual": 2.0815,
+   "predicted": 1.9971,
+   "error": -0.0843,
+   "rain_in": 0.181,
+   "tmin_f": 74.7,
+   "saturation": 0.0283,
+   "classification": "DRY",
+   "sat_confidence": 0.0283,
+   "precip_mm": 0.181,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-06-03",
+   "actual": 2.178,
+   "predicted": 2.0261,
+   "error": -0.1518,
+   "rain_in": 0.047,
+   "tmin_f": 78.6,
+   "saturation": 0.0287,
+   "classification": "DRY",
+   "sat_confidence": 0.0287,
+   "precip_mm": 0.047,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-06-04",
+   "actual": 2.0689,
+   "predicted": 2.1066,
+   "error": 0.0377,
+   "rain_in": 0.539,
+   "tmin_f": 72.5,
+   "saturation": 0.0407,
+   "classification": "DRY",
+   "sat_confidence": 0.0407,
+   "precip_mm": 0.539,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-06-05",
+   "actual": 2.5418,
+   "predicted": 1.9772,
+   "error": -0.5646,
+   "rain_in": 0.358,
+   "tmin_f": 71.6,
+   "saturation": 0.0497,
+   "classification": "WET",
+   "sat_confidence": 0.0497,
+   "precip_mm": 0.358,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-06-06",
+   "actual": 1.8454,
+   "predicted": 1.9685,
+   "error": 0.1232,
+   "rain_in": 0.0,
+   "tmin_f": 73.0,
+   "saturation": 0.0481,
+   "classification": "DRY",
+   "sat_confidence": 0.0481,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-06-07",
+   "actual": 1.6677,
+   "predicted": 1.9296,
+   "error": 0.2619,
+   "rain_in": 0.0,
+   "tmin_f": 72.6,
+   "saturation": 0.0477,
+   "classification": "DRY",
+   "sat_confidence": 0.0477,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-06-08",
+   "actual": 1.845,
+   "predicted": 1.9242,
+   "error": 0.0792,
+   "rain_in": 0.0,
+   "tmin_f": 73.4,
+   "saturation": 0.0476,
+   "classification": "DRY",
+   "sat_confidence": 0.0476,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-06-09",
+   "actual": 2.1017,
+   "predicted": 1.8171,
+   "error": -0.2846,
+   "rain_in": 0.098,
+   "tmin_f": 75.1,
+   "saturation": 0.0503,
+   "classification": "DRY",
+   "sat_confidence": 0.0503,
+   "precip_mm": 0.098,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-06-10",
+   "actual": 1.7241,
+   "predicted": 1.9025,
+   "error": 0.1785,
+   "rain_in": 0.5,
+   "tmin_f": 75.5,
+   "saturation": 0.0517,
+   "classification": "DRY",
+   "sat_confidence": 0.0517,
+   "precip_mm": 0.059,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-06-11",
+   "actual": 1.9707,
+   "predicted": 1.8524,
+   "error": -0.1183,
+   "rain_in": 0.008,
+   "tmin_f": 73.0,
+   "saturation": 0.0339,
+   "classification": "DRY",
+   "sat_confidence": 0.0339,
+   "precip_mm": 0.008,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-06-12",
+   "actual": 1.7924,
+   "predicted": 1.8642,
+   "error": 0.0719,
+   "rain_in": 0.1,
+   "tmin_f": 74.2,
+   "saturation": 0.0176,
+   "classification": "DRY",
+   "sat_confidence": 0.0176,
+   "precip_mm": 0.016,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-06-13",
+   "actual": 1.8317,
+   "predicted": 1.8437,
+   "error": 0.012,
+   "rain_in": 0.028,
+   "tmin_f": 75.3,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.028,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-06-14",
+   "actual": 1.8745,
+   "predicted": 1.8437,
+   "error": -0.0307,
+   "rain_in": 0.0,
+   "tmin_f": 74.2,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-06-15",
+   "actual": 1.8567,
+   "predicted": 1.8445,
+   "error": -0.0121,
+   "rain_in": 0.039,
+   "tmin_f": 75.4,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.039,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-06-16",
+   "actual": 1.8814,
+   "predicted": 1.8449,
+   "error": -0.0365,
+   "rain_in": 0.008,
+   "tmin_f": 74.5,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.008,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-06-17",
+   "actual": 1.7905,
+   "predicted": 1.8561,
+   "error": 0.0656,
+   "rain_in": 0.134,
+   "tmin_f": 78.3,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.134,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-06-18",
+   "actual": 2.0196,
+   "predicted": 1.8996,
+   "error": -0.12,
+   "rain_in": 0.75,
+   "tmin_f": 76.6,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.087,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-06-19",
+   "actual": 2.8657,
+   "predicted": 2.3701,
+   "error": -0.4955,
+   "rain_in": 1.75,
+   "tmin_f": 73.9,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 1.11,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-06-20",
+   "actual": 1.9114,
+   "predicted": 2.1205,
+   "error": 0.2092,
+   "rain_in": 0.15,
+   "tmin_f": 77.1,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.15,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-06-21",
+   "actual": 1.7876,
+   "predicted": 1.985,
+   "error": 0.1974,
+   "rain_in": 0.028,
+   "tmin_f": 75.7,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.028,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-06-22",
+   "actual": 2.0094,
+   "predicted": 2.0068,
+   "error": -0.0026,
+   "rain_in": 0.0,
+   "tmin_f": 75.2,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-06-23",
+   "actual": 1.8363,
+   "predicted": 1.8755,
+   "error": 0.0392,
+   "rain_in": 0.083,
+   "tmin_f": 73.9,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.083,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-06-24",
+   "actual": 1.8554,
+   "predicted": 1.8637,
+   "error": 0.0082,
+   "rain_in": 0.047,
+   "tmin_f": 76.3,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.047,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-06-25",
+   "actual": 1.9437,
+   "predicted": 1.859,
+   "error": -0.0847,
+   "rain_in": 0.059,
+   "tmin_f": 76.9,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.059,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-06-26",
+   "actual": 1.8308,
+   "predicted": 1.8679,
+   "error": 0.0372,
+   "rain_in": 0.016,
+   "tmin_f": 77.9,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.016,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-06-27",
+   "actual": 1.778,
+   "predicted": 1.859,
+   "error": 0.0811,
+   "rain_in": 0.012,
+   "tmin_f": 76.7,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.012,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-06-28",
+   "actual": 1.7326,
+   "predicted": 1.8562,
+   "error": 0.1236,
+   "rain_in": 0.1,
+   "tmin_f": 78.4,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.063,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-06-29",
+   "actual": 1.7825,
+   "predicted": 1.8472,
+   "error": 0.0647,
+   "rain_in": 0.055,
+   "tmin_f": 80.0,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.055,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-06-30",
+   "actual": 1.8842,
+   "predicted": 1.8415,
+   "error": -0.0427,
+   "rain_in": 0.0,
+   "tmin_f": 78.4,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-07-01",
+   "actual": 1.834,
+   "predicted": 1.8465,
+   "error": 0.0125,
+   "rain_in": 0.0,
+   "tmin_f": 77.4,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-07-02",
+   "actual": 1.7686,
+   "predicted": 1.8461,
+   "error": 0.0775,
+   "rain_in": 0.0,
+   "tmin_f": 79.3,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-07-03",
+   "actual": 1.7791,
+   "predicted": 1.841,
+   "error": 0.062,
+   "rain_in": 0.02,
+   "tmin_f": 78.3,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.02,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-07-04",
+   "actual": 1.7863,
+   "predicted": 1.8324,
+   "error": 0.0461,
+   "rain_in": 0.004,
+   "tmin_f": 80.8,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.004,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-07-05",
+   "actual": 1.8266,
+   "predicted": 1.8322,
+   "error": 0.0057,
+   "rain_in": 0.0,
+   "tmin_f": 78.2,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-07-06",
+   "actual": 2.2026,
+   "predicted": 2.0097,
+   "error": -0.1929,
+   "rain_in": 1.02,
+   "tmin_f": 78.0,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.866,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-07",
+   "actual": 2.9871,
+   "predicted": 2.4333,
+   "error": -0.5538,
+   "rain_in": 1.07,
+   "tmin_f": 76.9,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.693,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-08",
+   "actual": 4.2337,
+   "predicted": 3.6914,
+   "error": -0.5422,
+   "rain_in": 4.358,
+   "tmin_f": 74.7,
+   "saturation": 0.0775,
+   "classification": "WET",
+   "sat_confidence": 0.0775,
+   "precip_mm": 4.358,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-09",
+   "actual": 1.9734,
+   "predicted": 2.2491,
+   "error": 0.2757,
+   "rain_in": 0.075,
+   "tmin_f": 73.9,
+   "saturation": 0.0781,
+   "classification": "DRY",
+   "sat_confidence": 0.0781,
+   "precip_mm": 0.075,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-10",
+   "actual": 2.0262,
+   "predicted": 2.0417,
+   "error": 0.0156,
+   "rain_in": 0.016,
+   "tmin_f": 75.1,
+   "saturation": 0.0787,
+   "classification": "DRY",
+   "sat_confidence": 0.0787,
+   "precip_mm": 0.016,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-07-11",
+   "actual": 1.884,
+   "predicted": 2.0436,
+   "error": 0.1596,
+   "rain_in": 0.319,
+   "tmin_f": 73.7,
+   "saturation": 0.0884,
+   "classification": "WET",
+   "sat_confidence": 0.0884,
+   "precip_mm": 0.319,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-12",
+   "actual": 2.3375,
+   "predicted": 1.9004,
+   "error": -0.4371,
+   "rain_in": 0.276,
+   "tmin_f": 74.9,
+   "saturation": 0.0956,
+   "classification": "WET",
+   "sat_confidence": 0.0956,
+   "precip_mm": 0.276,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-13",
+   "actual": 1.9283,
+   "predicted": 1.9757,
+   "error": 0.0474,
+   "rain_in": 0.488,
+   "tmin_f": 75.0,
+   "saturation": 0.109,
+   "classification": "WET",
+   "sat_confidence": 0.109,
+   "precip_mm": 0.488,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-14",
+   "actual": 1.0895,
+   "predicted": 1.9213,
+   "error": 0.8318,
+   "rain_in": 0.394,
+   "tmin_f": 74.7,
+   "saturation": 0.1214,
+   "classification": "WET",
+   "sat_confidence": 0.1214,
+   "precip_mm": 0.394,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-15",
+   "actual": 1.909,
+   "predicted": 1.8301,
+   "error": -0.0788,
+   "rain_in": 0.0,
+   "tmin_f": 76.6,
+   "saturation": 0.1222,
+   "classification": "DRY",
+   "sat_confidence": 0.1222,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-16",
+   "actual": 1.8296,
+   "predicted": 1.7236,
+   "error": -0.106,
+   "rain_in": 0.213,
+   "tmin_f": 74.8,
+   "saturation": 0.1293,
+   "classification": "WET",
+   "sat_confidence": 0.1293,
+   "precip_mm": 0.213,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-17",
+   "actual": 1.8567,
+   "predicted": 1.7369,
+   "error": -0.1198,
+   "rain_in": 0.016,
+   "tmin_f": 76.6,
+   "saturation": 0.1304,
+   "classification": "DRY",
+   "sat_confidence": 0.1304,
+   "precip_mm": 0.016,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-18",
+   "actual": 1.7035,
+   "predicted": 1.8928,
+   "error": 0.1892,
+   "rain_in": 0.795,
+   "tmin_f": 73.5,
+   "saturation": 0.1536,
+   "classification": "WET",
+   "sat_confidence": 0.1536,
+   "precip_mm": 0.795,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-19",
+   "actual": 2.085,
+   "predicted": 2.2828,
+   "error": 0.1978,
+   "rain_in": 1.95,
+   "tmin_f": 74.6,
+   "saturation": 0.1576,
+   "classification": "DRY",
+   "sat_confidence": 0.1576,
+   "precip_mm": 0.083,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-20",
+   "actual": 2.3383,
+   "predicted": 1.9888,
+   "error": -0.3495,
+   "rain_in": 0.118,
+   "tmin_f": 73.9,
+   "saturation": 0.1387,
+   "classification": "WET",
+   "sat_confidence": 0.1387,
+   "precip_mm": 0.118,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-21",
+   "actual": 1.9052,
+   "predicted": 1.9398,
+   "error": 0.0346,
+   "rain_in": 0.173,
+   "tmin_f": 75.1,
+   "saturation": 0.1242,
+   "classification": "WET",
+   "sat_confidence": 0.1242,
+   "precip_mm": 0.173,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-22",
+   "actual": 1.8427,
+   "predicted": 1.9434,
+   "error": 0.1007,
+   "rain_in": 0.24,
+   "tmin_f": 75.2,
+   "saturation": 0.0207,
+   "classification": "DRY",
+   "sat_confidence": 0.0207,
+   "precip_mm": 0.24,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-23",
+   "actual": 2.3104,
+   "predicted": 2.2774,
+   "error": -0.033,
+   "rain_in": 1.102,
+   "tmin_f": 73.4,
+   "saturation": 0.0482,
+   "classification": "WET",
+   "sat_confidence": 0.0482,
+   "precip_mm": 1.102,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-24",
+   "actual": 2.0206,
+   "predicted": 2.1388,
+   "error": 0.1182,
+   "rain_in": 0.78,
+   "tmin_f": 73.5,
+   "saturation": 0.0681,
+   "classification": "WET",
+   "sat_confidence": 0.0681,
+   "precip_mm": 0.78,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-25",
+   "actual": 3.3991,
+   "predicted": 2.7583,
+   "error": -0.6408,
+   "rain_in": 2.5,
+   "tmin_f": 73.8,
+   "saturation": 0.1091,
+   "classification": "WET",
+   "sat_confidence": 0.1091,
+   "precip_mm": 1.902,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-26",
+   "actual": 3.3953,
+   "predicted": 3.2832,
+   "error": -0.1121,
+   "rain_in": 2.209,
+   "tmin_f": 70.3,
+   "saturation": 0.1598,
+   "classification": "WET",
+   "sat_confidence": 0.1598,
+   "precip_mm": 2.209,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-27",
+   "actual": 3.3229,
+   "predicted": 2.9595,
+   "error": -0.3635,
+   "rain_in": 1.591,
+   "tmin_f": 73.6,
+   "saturation": 0.1885,
+   "classification": "WET",
+   "sat_confidence": 0.1885,
+   "precip_mm": 1.591,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-28",
+   "actual": 3.3992,
+   "predicted": 2.3908,
+   "error": -1.0084,
+   "rain_in": 0.752,
+   "tmin_f": 73.8,
+   "saturation": 0.1967,
+   "classification": "WET",
+   "sat_confidence": 0.1967,
+   "precip_mm": 0.752,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-29",
+   "actual": 2.0618,
+   "predicted": 2.1056,
+   "error": 0.0437,
+   "rain_in": 0.031,
+   "tmin_f": 76.6,
+   "saturation": 0.1978,
+   "classification": "DRY",
+   "sat_confidence": 0.1978,
+   "precip_mm": 0.031,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-07-30",
+   "actual": 1.915,
+   "predicted": 2.0658,
+   "error": 0.1508,
+   "rain_in": 0.004,
+   "tmin_f": 77.8,
+   "saturation": 0.1919,
+   "classification": "DRY",
+   "sat_confidence": 0.1919,
+   "precip_mm": 0.004,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-07-31",
+   "actual": 1.8932,
+   "predicted": 2.0125,
+   "error": 0.1193,
+   "rain_in": 0.0,
+   "tmin_f": 77.6,
+   "saturation": 0.1911,
+   "classification": "DRY",
+   "sat_confidence": 0.1911,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-08-01",
+   "actual": 1.9011,
+   "predicted": 1.8966,
+   "error": -0.0045,
+   "rain_in": 0.012,
+   "tmin_f": 74.2,
+   "saturation": 0.1699,
+   "classification": "DRY",
+   "sat_confidence": 0.1699,
+   "precip_mm": 0.012,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-08-02",
+   "actual": 1.8814,
+   "predicted": 1.8556,
+   "error": -0.0258,
+   "rain_in": 0.0,
+   "tmin_f": 74.8,
+   "saturation": 0.1668,
+   "classification": "DRY",
+   "sat_confidence": 0.1668,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-08-03",
+   "actual": 1.8145,
+   "predicted": 1.8556,
+   "error": 0.041,
+   "rain_in": 0.012,
+   "tmin_f": 77.8,
+   "saturation": 0.1634,
+   "classification": "DRY",
+   "sat_confidence": 0.1634,
+   "precip_mm": 0.012,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-08-04",
+   "actual": 1.8939,
+   "predicted": 1.8836,
+   "error": -0.0103,
+   "rain_in": 0.484,
+   "tmin_f": 73.9,
+   "saturation": 0.1708,
+   "classification": "WET",
+   "sat_confidence": 0.1708,
+   "precip_mm": 0.484,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-08-05",
+   "actual": 1.8123,
+   "predicted": 1.855,
+   "error": 0.0427,
+   "rain_in": 0.02,
+   "tmin_f": 76.6,
+   "saturation": 0.1638,
+   "classification": "DRY",
+   "sat_confidence": 0.1638,
+   "precip_mm": 0.02,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-08-06",
+   "actual": 1.8031,
+   "predicted": 1.855,
+   "error": 0.0519,
+   "rain_in": 0.0,
+   "tmin_f": 75.6,
+   "saturation": 0.1339,
+   "classification": "DRY",
+   "sat_confidence": 0.1339,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-08-07",
+   "actual": 1.7866,
+   "predicted": 1.855,
+   "error": 0.0684,
+   "rain_in": 0.0,
+   "tmin_f": 76.9,
+   "saturation": 0.1119,
+   "classification": "DRY",
+   "sat_confidence": 0.1119,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-08-08",
+   "actual": 1.7264,
+   "predicted": 1.8465,
+   "error": 0.1201,
+   "rain_in": 0.0,
+   "tmin_f": 76.8,
+   "saturation": 0.0604,
+   "classification": "DRY",
+   "sat_confidence": 0.0604,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-08-09",
+   "actual": 1.7693,
+   "predicted": 1.8209,
+   "error": 0.0516,
+   "rain_in": 0.189,
+   "tmin_f": 78.4,
+   "saturation": 0.0062,
+   "classification": "DRY",
+   "sat_confidence": 0.0062,
+   "precip_mm": 0.189,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-08-10",
+   "actual": 1.8926,
+   "predicted": 1.8274,
+   "error": -0.0651,
+   "rain_in": 0.0,
+   "tmin_f": 77.5,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-08-11",
+   "actual": 2.0165,
+   "predicted": 1.8274,
+   "error": -0.189,
+   "rain_in": 0.0,
+   "tmin_f": 75.5,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-08-12",
+   "actual": 1.8837,
+   "predicted": 1.8858,
+   "error": 0.0021,
+   "rain_in": 0.161,
+   "tmin_f": 76.6,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.161,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-08-13",
+   "actual": 1.5891,
+   "predicted": 1.8643,
+   "error": 0.2752,
+   "rain_in": 0.031,
+   "tmin_f": 77.6,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.031,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-08-14",
+   "actual": 1.7755,
+   "predicted": 1.8261,
+   "error": 0.0506,
+   "rain_in": 0.02,
+   "tmin_f": 77.8,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.02,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-08-15",
+   "actual": 1.9004,
+   "predicted": 1.7763,
+   "error": -0.1242,
+   "rain_in": 0.012,
+   "tmin_f": 77.3,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.012,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-08-16",
+   "actual": 1.7276,
+   "predicted": 1.8263,
+   "error": 0.0986,
+   "rain_in": 0.028,
+   "tmin_f": 77.5,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.028,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-08-17",
+   "actual": 1.9851,
+   "predicted": 1.8251,
+   "error": -0.16,
+   "rain_in": 0.0,
+   "tmin_f": 77.8,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-08-18",
+   "actual": 2.1066,
+   "predicted": 1.8465,
+   "error": -0.2601,
+   "rain_in": 0.0,
+   "tmin_f": 77.4,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-08-24",
+   "actual": 1.8988,
+   "predicted": 1.8653,
+   "error": -0.0335,
+   "rain_in": 0.012,
+   "tmin_f": 75.2,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.012,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-08-25",
+   "actual": 1.9962,
+   "predicted": 1.8755,
+   "error": -0.1208,
+   "rain_in": 0.0,
+   "tmin_f": 75.1,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.0,
+   "screened_out": false,
+   "rain_wet": false
+  },
+  {
+   "date": "2024-08-26",
+   "actual": 1.8569,
+   "predicted": 1.8305,
+   "error": -0.0264,
+   "rain_in": 0.323,
+   "tmin_f": 75.3,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.323,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-08-27",
+   "actual": 1.8361,
+   "predicted": 1.861,
+   "error": 0.0249,
+   "rain_in": 0.1,
+   "tmin_f": 73.4,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.087,
+   "screened_out": false,
+   "rain_wet": true
+  },
+  {
+   "date": "2024-08-28",
+   "actual": 1.8088,
+   "predicted": 1.8542,
+   "error": 0.0455,
+   "rain_in": 0.252,
+   "tmin_f": 74.5,
+   "saturation": 0.0,
+   "classification": "DRY",
+   "sat_confidence": 0.0,
+   "precip_mm": 0.252,
+   "screened_out": false,
+   "rain_wet": true
+  }
+ ],
+ "saturation_history": [
+  {
+   "date": "2023-10-06",
+   "saturation": 0.0074,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-07",
+   "saturation": 0.0067,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-08",
+   "saturation": 0.008,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-09",
+   "saturation": 0.0028,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-10",
+   "saturation": 0.0066,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-11",
+   "saturation": 0.0342,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-12",
+   "saturation": 0.0348,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-13",
+   "saturation": 0.0387,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-14",
+   "saturation": 0.0391,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-15",
+   "saturation": 0.0401,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-16",
+   "saturation": 0.0415,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-17",
+   "saturation": 0.0315,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-18",
+   "saturation": 0.0254,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-19",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-20",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-21",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-22",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-23",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-24",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-25",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-26",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-27",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-28",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-29",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-30",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-10-31",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-01",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-02",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-03",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-04",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-05",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-06",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-07",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-08",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-09",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-10",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-11",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-12",
+   "saturation": 0.0124,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-13",
+   "saturation": 0.0535,
+   "classification": "WET"
+  },
+  {
+   "date": "2023-11-14",
+   "saturation": 0.0537,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-15",
+   "saturation": 0.0538,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-16",
+   "saturation": 0.0558,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-17",
+   "saturation": 0.0562,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-18",
+   "saturation": 0.0564,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-19",
+   "saturation": 0.0572,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-20",
+   "saturation": 0.0618,
+   "classification": "WET"
+  },
+  {
+   "date": "2023-11-21",
+   "saturation": 0.0615,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-22",
+   "saturation": 0.0622,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-23",
+   "saturation": 0.0498,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-24",
+   "saturation": 0.036,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-25",
+   "saturation": 0.0352,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-26",
+   "saturation": 0.0237,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-27",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-28",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-29",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-11-30",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-01",
+   "saturation": 0.0122,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-02",
+   "saturation": 0.0132,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-03",
+   "saturation": 0.0124,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-04",
+   "saturation": 0.0078,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-05",
+   "saturation": 0.0089,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-06",
+   "saturation": 0.009,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-07",
+   "saturation": 0.007,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-08",
+   "saturation": 0.0093,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-09",
+   "saturation": 0.015,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-10",
+   "saturation": 0.0091,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-11",
+   "saturation": 0.0091,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-12",
+   "saturation": 0.0087,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-13",
+   "saturation": 0.0104,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-14",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-15",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-16",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-17",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-18",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-19",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-20",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-21",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-22",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-23",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-24",
+   "saturation": 0.0304,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-25",
+   "saturation": 0.0302,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-26",
+   "saturation": 0.0309,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-27",
+   "saturation": 0.029,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-28",
+   "saturation": 0.0286,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-29",
+   "saturation": 0.0227,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-30",
+   "saturation": 0.0228,
+   "classification": "DRY"
+  },
+  {
+   "date": "2023-12-31",
+   "saturation": 0.0226,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-01",
+   "saturation": 0.0252,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-02",
+   "saturation": 0.0351,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-03",
+   "saturation": 0.0679,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-01-04",
+   "saturation": 0.0681,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-05",
+   "saturation": 0.1209,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-01-06",
+   "saturation": 0.1046,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-07",
+   "saturation": 0.0703,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-08",
+   "saturation": 0.0898,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-01-09",
+   "saturation": 0.0892,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-10",
+   "saturation": 0.0891,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-11",
+   "saturation": 0.0898,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-12",
+   "saturation": 0.0897,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-13",
+   "saturation": 0.0894,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-14",
+   "saturation": 0.0903,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-15",
+   "saturation": 0.0915,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-16",
+   "saturation": 0.0821,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-17",
+   "saturation": 0.0496,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-18",
+   "saturation": 0.0496,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-19",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-20",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-21",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-22",
+   "saturation": 0.034,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-23",
+   "saturation": 0.078,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-01-24",
+   "saturation": 0.1233,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-01-25",
+   "saturation": 0.1523,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-01-26",
+   "saturation": 0.1588,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-01-27",
+   "saturation": 0.1595,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-28",
+   "saturation": 0.1585,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-29",
+   "saturation": 0.1545,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-30",
+   "saturation": 0.1534,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-01-31",
+   "saturation": 0.1525,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-01",
+   "saturation": 0.1517,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-02",
+   "saturation": 0.1596,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-02-03",
+   "saturation": 0.1866,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-02-04",
+   "saturation": 0.1832,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-05",
+   "saturation": 0.1246,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-06",
+   "saturation": 0.0801,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-07",
+   "saturation": 0.0347,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-08",
+   "saturation": 0.0064,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-09",
+   "saturation": 0.0006,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-10",
+   "saturation": 0.0111,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-11",
+   "saturation": 0.0128,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-12",
+   "saturation": 0.0128,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-13",
+   "saturation": 0.0128,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-14",
+   "saturation": 0.0125,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-15",
+   "saturation": 0.0135,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-16",
+   "saturation": 0.0162,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-17",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-18",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-19",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-20",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-21",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-22",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-23",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-24",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-25",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-26",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-27",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-28",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-02-29",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-01",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-02",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-03",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-04",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-05",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-06",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-07",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-08",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-09",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-10",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-11",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-12",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-13",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-14",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-15",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-16",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-17",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-18",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-19",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-20",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-21",
+   "saturation": 0.0327,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-22",
+   "saturation": 0.0251,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-23",
+   "saturation": 0.0245,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-24",
+   "saturation": 0.0245,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-25",
+   "saturation": 0.0266,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-26",
+   "saturation": 0.0255,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-27",
+   "saturation": 0.0263,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-28",
+   "saturation": 0.0209,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-29",
+   "saturation": 0.015,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-30",
+   "saturation": 0.0092,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-03-31",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-01",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-02",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-03",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-04",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-05",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-06",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-07",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-08",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-09",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-10",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-11",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-12",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-13",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-14",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-15",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-16",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-17",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-18",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-19",
+   "saturation": 0.0125,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-20",
+   "saturation": 0.0405,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-21",
+   "saturation": 0.0479,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-04-22",
+   "saturation": 0.0357,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-23",
+   "saturation": 0.0238,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-24",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-25",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-26",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-27",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-28",
+   "saturation": 0.0316,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-29",
+   "saturation": 0.0336,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-04-30",
+   "saturation": 0.0345,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-01",
+   "saturation": 0.0656,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-05-02",
+   "saturation": 0.1278,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-05-03",
+   "saturation": 0.1398,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-05-04",
+   "saturation": 0.1125,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-05",
+   "saturation": 0.1231,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-05-06",
+   "saturation": 0.1237,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-07",
+   "saturation": 0.1256,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-05-08",
+   "saturation": 0.1249,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-09",
+   "saturation": 0.1254,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-10",
+   "saturation": 0.1242,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-11",
+   "saturation": 0.1246,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-12",
+   "saturation": 0.1401,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-05-13",
+   "saturation": 0.1511,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-05-14",
+   "saturation": 0.148,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-15",
+   "saturation": 0.1151,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-16",
+   "saturation": 0.1051,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-05-17",
+   "saturation": 0.0821,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-18",
+   "saturation": 0.0802,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-19",
+   "saturation": 0.0587,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-20",
+   "saturation": 0.0582,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-21",
+   "saturation": 0.0557,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-22",
+   "saturation": 0.0562,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-23",
+   "saturation": 0.0549,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-24",
+   "saturation": 0.0543,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-25",
+   "saturation": 0.0516,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-26",
+   "saturation": 0.0016,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-27",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-28",
+   "saturation": 0.004,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-29",
+   "saturation": 0.021,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-30",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-05-31",
+   "saturation": 0.0076,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-01",
+   "saturation": 0.0228,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-02",
+   "saturation": 0.0283,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-03",
+   "saturation": 0.0287,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-04",
+   "saturation": 0.0407,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-05",
+   "saturation": 0.0497,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-06-06",
+   "saturation": 0.0481,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-07",
+   "saturation": 0.0477,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-08",
+   "saturation": 0.0476,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-09",
+   "saturation": 0.0503,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-10",
+   "saturation": 0.0517,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-11",
+   "saturation": 0.0339,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-12",
+   "saturation": 0.0176,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-13",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-14",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-15",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-16",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-17",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-18",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-19",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-20",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-21",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-22",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-23",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-24",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-25",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-26",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-27",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-28",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-29",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-06-30",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-07-01",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-07-02",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-07-03",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-07-04",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-07-05",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-07-06",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-07-07",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-07-08",
+   "saturation": 0.0775,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-07-09",
+   "saturation": 0.0781,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-07-10",
+   "saturation": 0.0787,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-07-11",
+   "saturation": 0.0884,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-07-12",
+   "saturation": 0.0956,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-07-13",
+   "saturation": 0.109,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-07-14",
+   "saturation": 0.1214,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-07-15",
+   "saturation": 0.1222,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-07-16",
+   "saturation": 0.1293,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-07-17",
+   "saturation": 0.1304,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-07-18",
+   "saturation": 0.1536,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-07-19",
+   "saturation": 0.1576,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-07-20",
+   "saturation": 0.1387,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-07-21",
+   "saturation": 0.1242,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-07-22",
+   "saturation": 0.0207,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-07-23",
+   "saturation": 0.0482,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-07-24",
+   "saturation": 0.0681,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-07-25",
+   "saturation": 0.1091,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-07-26",
+   "saturation": 0.1598,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-07-27",
+   "saturation": 0.1885,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-07-28",
+   "saturation": 0.1967,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-07-29",
+   "saturation": 0.1978,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-07-30",
+   "saturation": 0.1919,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-07-31",
+   "saturation": 0.1911,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-01",
+   "saturation": 0.1699,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-02",
+   "saturation": 0.1668,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-03",
+   "saturation": 0.1634,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-04",
+   "saturation": 0.1708,
+   "classification": "WET"
+  },
+  {
+   "date": "2024-08-05",
+   "saturation": 0.1638,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-06",
+   "saturation": 0.1339,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-07",
+   "saturation": 0.1119,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-08",
+   "saturation": 0.0604,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-09",
+   "saturation": 0.0062,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-10",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-11",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-12",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-13",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-14",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-15",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-16",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-17",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-18",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-19",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-20",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-21",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-22",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-23",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-24",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-25",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-26",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-27",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-28",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-29",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-30",
+   "saturation": 0.0,
+   "classification": "DRY"
+  },
+  {
+   "date": "2024-08-31",
+   "saturation": 0.0,
+   "classification": "DRY"
+  }
+ ]
+}

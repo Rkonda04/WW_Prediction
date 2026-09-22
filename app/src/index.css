@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Chart ink + surfaces, redefined for dark below. Charts read these
+       through getComputedStyle so SVG and DOM stay in one theme. */
+    --chart-surface: #ffffff;
+    --chart-grid: #e6e8eb;
+    --chart-axis: #8a9099;
+    --chart-ink: #1f2933;
+    --chart-ink-muted: #667085;
+    --series-actual: #1e88e5;
+    --series-predicted: #e8710a;
+    --band-fill: rgba(30, 136, 229, 0.1);
+  }
+
+  .dark {
+    --chart-surface: #1d2026;
+    --chart-grid: #2e333c;
+    --chart-axis: #7d858f;
+    --chart-ink: #e8eaed;
+    --chart-ink-muted: #9aa1ab;
+    --series-actual: #3d92e0;
+    --series-predicted: #ce7b26;
+    --band-fill: rgba(61, 146, 224, 0.14);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    @apply bg-canvas text-slate-800 font-sans antialiased;
+  }
+
+  .dark body {
+    @apply bg-canvas-dark text-slate-100;
+  }
+
+  /* Recharts draws a focus outline on the SVG wrapper on click; suppress it
+     without removing keyboard focus rings from real controls. */
+  .recharts-wrapper:focus {
+    outline: none;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-surface dark:bg-surface-dark rounded-card shadow-card
+           border border-slate-200/70 dark:border-slate-700/60;
+  }
+
+  .card-title {
+    @apply text-sm font-semibold text-slate-700 dark:text-slate-200;
+  }
+
+  .card-subtitle {
+    @apply text-xs text-slate-500 dark:text-slate-400;
+  }
+
+  .stat-value {
+    @apply text-2xl font-semibold tabular-nums text-slate-900 dark:text-slate-50;
+  }
+
+  .stat-label {
+    @apply text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1
+           text-xs font-medium;
+  }
+
+  .btn {
+    @apply rounded-md border border-slate-300 dark:border-slate-600
+           bg-white dark:bg-slate-800 px-2.5 py-1.5 text-xs font-medium
+           text-slate-700 dark:text-slate-200
+           hover:bg-slate-50 dark:hover:bg-slate-700
+           focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
+           transition-colors;
+  }
+
+  .btn-active {
+    @apply border-primary bg-primary text-white hover:bg-primary-dark
+           dark:border-primary dark:bg-primary dark:text-white;
+  }
+
+  .input {
+    @apply rounded-md border border-slate-300 dark:border-slate-600
+           bg-white dark:bg-slate-800 px-2 py-1.5 text-xs
+           text-slate-700 dark:text-slate-200
+           focus:outline-none focus-visible:ring-2 focus-visible:ring-primary;
+  }
+}
