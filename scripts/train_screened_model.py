@@ -191,8 +191,8 @@ def build_feature_frame(ts, om, flow_unscreened):
     return f
 
 
-def drop_incomplete(feat, require_target=True):
-    req = FEATURE_COLUMNS + ["recent_level", "flow_true"] + (["target_excess"] if require_target else [])
+def drop_incomplete(feat, require_target=True, cols=None):
+    req = (cols or FEATURE_COLUMNS) + ["recent_level", "flow_true"] + (["target_excess"] if require_target else [])
     mask = feat[req].isna().any(axis=1)
     return feat.loc[~mask].copy(), int(mask.sum())
 
@@ -206,15 +206,17 @@ def wet_weights(complete, mask):
     return np.where(wet, WET_DAY_SAMPLE_WEIGHT, 1.0)
 
 
-def fit_xgb(complete, mask, params, n_estimators):
+def fit_xgb(complete, mask, params, n_estimators, cols=None):
+    cols = cols or FEATURE_COLUMNS
     m = xgb.XGBRegressor(**params, n_estimators=n_estimators, objective="reg:squarederror", random_state=42)
-    m.fit(complete.loc[mask, FEATURE_COLUMNS].values, complete.loc[mask, "target_excess"].values,
+    m.fit(complete.loc[mask, cols].values, complete.loc[mask, "target_excess"].values,
           sample_weight=wet_weights(complete, mask))
     return m
 
 
-def cv_select(complete, dates):
+def cv_select(complete, dates, cols=None):
     """Average early-stopped RMSE (on reconstructed flow) across the 3 folds for each grid entry."""
+    cols = cols or FEATURE_COLUMNS
     rows = []
     for gi, params in enumerate(XGB_GRID):
         rmses, ns = [], []
@@ -222,11 +224,11 @@ def cv_select(complete, dates):
             tm, vm = tm.values, vm.values
             m = xgb.XGBRegressor(**params, n_estimators=1500, objective="reg:squarederror", random_state=42,
                                  early_stopping_rounds=XGB_EARLY_STOPPING_ROUNDS)
-            m.fit(complete.loc[tm, FEATURE_COLUMNS].values, complete.loc[tm, "target_excess"].values,
+            m.fit(complete.loc[tm, cols].values, complete.loc[tm, "target_excess"].values,
                   sample_weight=wet_weights(complete, tm),
-                  eval_set=[(complete.loc[vm, FEATURE_COLUMNS].values, complete.loc[vm, "target_excess"].values)], verbose=False)
+                  eval_set=[(complete.loc[vm, cols].values, complete.loc[vm, "target_excess"].values)], verbose=False)
             n = m.best_iteration + 1
-            pred = complete.loc[vm, "recent_level"].values + m.predict(complete.loc[vm, FEATURE_COLUMNS].values, iteration_range=(0, n))
+            pred = complete.loc[vm, "recent_level"].values + m.predict(complete.loc[vm, cols].values, iteration_range=(0, n))
             rmses.append(model_eval.score(complete.loc[vm].index, complete.loc[vm, "flow_true"], pred)["RMSE"])
             ns.append(n)
         rows.append({"Grid_Index": gi, **params, "Avg_CV_RMSE": float(np.mean(rmses)), "N_Estimators": int(np.mean(ns)),
@@ -260,20 +262,21 @@ def score_subsets(df, pred, high_flow_threshold):
     return pd.DataFrame(rows)
 
 
-def pooled_out_of_sample(complete, dates, params, n_estimators, train_mask, test_mask):
+def pooled_out_of_sample(complete, dates, params, n_estimators, train_mask, test_mask, cols=None, path=None):
     """Every year predicted by a model that never saw it: 3 CV validation years + TEST."""
+    cols = cols or FEATURE_COLUMNS
     parts = []
     for name, tm, vm in model_eval.get_cv_fold_masks(dates):
         tm, vm = tm.values, vm.values
-        m = fit_xgb(complete, tm, params, n_estimators)
-        p = complete.loc[vm, "recent_level"].values + m.predict(complete.loc[vm, FEATURE_COLUMNS].values)
+        m = fit_xgb(complete, tm, params, n_estimators, cols)
+        p = complete.loc[vm, "recent_level"].values + m.predict(complete.loc[vm, cols].values)
         parts.append(pd.DataFrame({"Period": f"{name} val {complete.index[vm].year.min()}", "y": complete.loc[vm, "flow_true"].values, "p": p}, index=complete.index[vm]))
-    m = fit_xgb(complete, train_mask, params, n_estimators)
-    p = complete.loc[test_mask, "recent_level"].values + m.predict(complete.loc[test_mask, FEATURE_COLUMNS].values)
+    m = fit_xgb(complete, train_mask, params, n_estimators, cols)
+    p = complete.loc[test_mask, "recent_level"].values + m.predict(complete.loc[test_mask, cols].values)
     parts.append(pd.DataFrame({"Period": "TEST 2024", "y": complete.loc[test_mask, "flow_true"].values, "p": p}, index=complete.index[test_mask]))
     allp = pd.concat(parts)
     allp["persist"] = complete.loc[allp.index, "flow_lag1"].values
-    allp.to_csv(OOS_PREDICTIONS_CSV, index_label="Date")
+    allp.to_csv(path or OOS_PREDICTIONS_CSV, index_label="Date")
     rows = [{"Period": per, **full_metrics(g.index, g.y, g.p)} for per, g in allp.groupby("Period", sort=False)]
     rows.append({"Period": "POOLED", **full_metrics(allp.index, allp.y, allp.p)})
     rows.append({"Period": "POOLED persistence baseline (flow[t-1])", **full_metrics(allp.index, allp.y, allp.persist)})

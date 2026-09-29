@@ -37,7 +37,7 @@ export default function Dashboard() {
             RRWWTF Flow Prediction Dashboard
           </h1>
           <span className="text-xs text-slate-500 dark:text-slate-400">
-            Richmond Regional WWTF {'·'} Phase 5 model
+            Richmond Regional WWTF {'·'} Phase 6 model
           </span>
         </div>
       </header>

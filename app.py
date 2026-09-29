@@ -9,7 +9,7 @@ from datetime import datetime
 st.set_page_config(page_title="WWTF Flow Prediction", layout="wide", initial_sidebar_state="expanded")
 
 BASE_DIR = Path(__file__).resolve().parent
-MODEL_DIR = BASE_DIR / "output" / "13_screened_model"
+MODEL_DIR = BASE_DIR / "output" / "22_phase6_gauge_network"
 OOS_CSV = MODEL_DIR / "out_of_sample_predictions_all_years.csv"
 SCREENED_CSV = MODEL_DIR / "screened_days.csv"
 
@@ -172,8 +172,8 @@ try:
         st.dataframe(screened_display, use_container_width=True, hide_index=True)
 
     st.divider()
-    st.markdown("**Model Details:** XGBoost screened decomposition model trained on historical data with cross-validation and held-out 2024 test year evaluation.")
+    st.markdown("**Model Details:** XGBoost screened decomposition model (Phase 6) driven by the average of nearby rain gauges, trained on historical data with cross-validation and held-out 2024 test year evaluation.")
 
 except FileNotFoundError as e:
-    st.error(f"❌ Data files not found. Please ensure the model output files exist in `output/13_screened_model/`")
+    st.error(f"❌ Data files not found. Please ensure the model output files exist in `output/22_phase6_gauge_network/`")
     st.stop()

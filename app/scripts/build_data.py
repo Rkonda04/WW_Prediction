@@ -1,10 +1,11 @@
 """
-Build the dashboard data bundle from Phase 5 model outputs.
+Build the dashboard data bundle from Phase 6 model outputs.
 
 Reads (relative to the WW project root, i.e. app/..):
-  output/13_screened_model/test_predictions_2024.csv   - actual vs predicted flow
-  output/13_screened_model/test_scores.csv             - the model's own scorecard
-  output/14_saturation_model/saturation_timeseries.csv - saturation index + class
+  output/22_phase6_gauge_network/test_predictions_2024.csv - actual vs predicted flow
+  output/22_phase6_gauge_network/test_scores.csv           - the model's own scorecard
+  output/21_wet_weather_review/gauge_network_daily.csv     - the model's rain input
+  output/14_saturation_model/saturation_timeseries.csv     - saturation index + class
 
 Writes:
   app/src/data/predictions.json
@@ -22,8 +23,10 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
-PRED_CSV = ROOT / "output" / "13_screened_model" / "test_predictions_2024.csv"
-SCORES_CSV = ROOT / "output" / "13_screened_model" / "test_scores.csv"
+MODEL_DIR = ROOT / "output" / "22_phase6_gauge_network"
+PRED_CSV = MODEL_DIR / "test_predictions_2024.csv"
+SCORES_CSV = MODEL_DIR / "test_scores.csv"
+RAIN_CSV = ROOT / "output" / "21_wet_weather_review" / "gauge_network_daily.csv"
 SAT_CSV = ROOT / "output" / "14_saturation_model" / "saturation_timeseries.csv"
 
 OUT_JSON = Path(__file__).resolve().parents[1] / "src" / "data" / "predictions.json"
@@ -118,11 +121,12 @@ def main():
     # does, so a plain row-wise shift() would look back to the wrong day. Rebuild
     # the lag on a continuous daily index, filling days the test CSV omits from
     # the same precipitation record the model's Rain_in column comes from.
+    gauge_rain = pd.read_csv(RAIN_CSV, parse_dates=["Date"]).set_index("Date")["network_mean_in"]
     rain_daily = (
         merged.set_index("Date")["rain_in"]
         .reindex(pd.date_range(merged["Date"].min() - pd.Timedelta(days=1),
                                merged["Date"].max(), freq="D"))
-        .fillna(sat.set_index("Date")["precip_mm"])
+        .fillna(gauge_rain)
     )
     wet_daily = (rain_daily > WET_DAY_RAIN_THRESHOLD_IN) | (
         rain_daily.shift(1) > WET_DAY_RAIN_THRESHOLD_IN
@@ -218,7 +222,7 @@ def main():
             "saturation": SAT_CSV.relative_to(ROOT).as_posix(),
         },
         "model": {
-            "name": "XGBoost Screened (Phase 5)",
+            "name": "XGBoost Screened (Phase 6, nearby rain gauges)",
             "protocol": "Screened - flagged days excluded from scoring",
             "test_start": records[0]["date"],
             "test_end": records[-1]["date"],

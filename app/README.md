@@ -1,6 +1,6 @@
 # RRWWTF Flow Prediction Dashboard
 
-A single-page dashboard over the Phase 5 flow model and the soil-saturation model
+A single-page dashboard over the Phase 6 flow model and the soil-saturation model
 for the Richmond Regional WWTF. React 18 + Vite + Tailwind + Recharts.
 
 The page is a **retrospective viewer over a pre-computed bundle**, not a live
@@ -30,8 +30,8 @@ writes one JSON bundle that the app imports at build time:
 
 | Source | Used for |
 |---|---|
-| `output/13_screened_model/test_predictions_2024.csv` | actual vs predicted flow, rainfall, Tmin |
-| `output/13_screened_model/test_scores.csv` | cross-check only — never displayed directly |
+| `output/22_phase6_gauge_network/test_predictions_2024.csv` | actual vs predicted flow, rainfall, Tmin |
+| `output/22_phase6_gauge_network/test_scores.csv` | cross-check only — never displayed directly |
 | `output/14_saturation_model/saturation_timeseries.csv` | saturation index, Wet/Dry label, precipitation |
 
 The script **recomputes** every metric from the raw predictions rather than
@@ -80,7 +80,7 @@ rain rule). The dashboard raises this as a standing alert. Dry-day output should
 not drive capacity or compliance decisions.
 
 **"Prediction confidence" is a presentation heuristic, not a model output.** The
-Phase 5 model emits a point estimate with no per-day uncertainty. The confidence
+Phase 6 model emits a point estimate with no per-day uncertainty. The confidence
 chip keys off the one thing validation established — that accuracy splits by rain
 state — and is labelled as such in the code (`src/lib/metrics.js`).
 
@@ -112,14 +112,17 @@ than one palette flipped.
 
 ## Updating with new predictions
 
-1. Retrain / rerun the model so `output/13_screened_model/` and
-   `output/14_saturation_model/` are refreshed.
+1. Retrain / rerun the model so `output/22_phase6_gauge_network/` and
+   `output/14_saturation_model/` are refreshed. From `scripts/`:
+   `python fetch_wet_weather_inputs.py` (new gauge data), then
+   `python train_phase6_model.py` (also appends the run to the scorecard history),
+   then `python rating_curve.py`.
 2. `npm run data` — watch for `WARNING:` lines, which mean the recomputed metrics
    no longer match the model's own scorecard.
 3. `npm run build`, then redeploy `dist/`.
 
 Weekly or daily batch refresh is the intended cadence. Making this real-time
-would mean standing the Phase 5 model up behind an endpoint and having the page
+would mean standing the Phase 6 model up behind an endpoint and having the page
 fetch instead of importing the bundle — the components already take their data as
 props, so only `src/Dashboard.jsx` would change.
 

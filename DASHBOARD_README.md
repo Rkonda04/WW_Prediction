@@ -52,8 +52,8 @@ Then enable Streamlit Cloud in your repo settings.
 ## Data Requirements
 
 The app expects these files:
-- `output/13_screened_model/out_of_sample_predictions_all_years.csv`
-- `output/13_screened_model/screened_days.csv`
+- `output/22_phase6_gauge_network/out_of_sample_predictions_all_years.csv`
+- `output/22_phase6_gauge_network/screened_days.csv`
 
 ## Styling
 
