@@ -2,10 +2,11 @@ import { useEffect, useMemo, useState } from 'react'
 import bundle from './data/predictions.json'
 import Controls from './components/Controls'
 import FlowForecast from './components/FlowForecast'
+import RainfallForecast from './components/RainfallForecast'
 import { Card, useTheme } from './components/ui'
 import { cssVar, fmt } from './lib/metrics'
 
-const { predictions, model } = bundle
+const { predictions, model, rating_curve: ratingCurve } = bundle
 
 const MAX_DATE = predictions[predictions.length - 1].date
 
@@ -43,6 +44,13 @@ export default function Dashboard() {
       </header>
 
       <main className="mx-auto max-w-[1400px] px-4 py-4 sm:px-6">
+        <div className="mb-4">
+          <RainfallForecast curve={ratingCurve} theme={theme} />
+        </div>
+
+        <h2 className="mb-2 mt-6 text-sm font-semibold text-slate-700 dark:text-slate-200">
+          How the model performed on past days
+        </h2>
         <Controls
           dark={dark}
           onDark={setDark}
@@ -116,6 +124,9 @@ function readTheme() {
     axis: cssVar('--chart-axis', '#8A9099'),
     ink: cssVar('--chart-ink', '#1F2933'),
     surface: cssVar('--chart-surface', '#FFFFFF'),
+    curveDry: cssVar('--curve-dry', '#90BFF0'),
+    curveNormal: cssVar('--curve-normal', '#1E88E5'),
+    curveWet: cssVar('--curve-wet', '#0B4A8F'),
     good: '#43A047',
     bad: '#E53935',
   }

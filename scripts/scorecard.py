@@ -47,6 +47,7 @@ DEFAULT_LABEL = "Phase5_shipped"
 WET_IN = 0.1
 TOL_MGD = 0.3
 TOL_PCT = 0.20
+BAND_UNDER_MGD, BAND_OVER_MGD = 0.2, 0.3  # agreed reporting tolerance: -0.2 / +0.3 MGD
 HIGH_FLOW_MGD = 2.5
 PERCENTILES = [5, 10, 25, 50, 75, 90, 95, 99]
 FLOW_BANDS = [(0, 1.5), (1.5, 2.0), (2.0, 2.5), (2.5, 3.0), (3.0, np.inf)]
@@ -88,6 +89,8 @@ def metrics(d: pd.DataFrame) -> dict:
         "R2": 1 - float((e ** 2).sum()) / ss_tot if len(d) > 2 and ss_tot > 0 else np.nan,
         "MAPE_Pct": float((np.abs(e) / y).mean() * 100),
         "Within_0.3MGD_Pct": float((np.abs(e) <= TOL_MGD).mean() * 100),
+        "Correct_Band_Pct": float(((e >= -BAND_UNDER_MGD) & (e <= BAND_OVER_MGD)).mean() * 100),
+        "Accuracy_Pct": float(100 - (np.abs(e) / y).mean() * 100),
         "Within_20Pct_Pct": float((np.abs(e) / y <= TOL_PCT).mean() * 100),
         "Underpredicted_Pct": float((e < 0).mean() * 100),
         "Mean_Observed": float(y.mean()),
@@ -222,6 +225,8 @@ def run(predictions: Path, label: str, context: pd.DataFrame = None) -> dict:
         "Period": f"{d['Date'].min():%Y-%m-%d} to {d['Date'].max():%Y-%m-%d}", "N_Days": len(d),
         "MAE_All": m(main, "All", "MAE"), "RMSE_All": m(main, "All", "RMSE"), "Bias_All": m(main, "All", "Bias"),
         "R2_All": m(main, "All", "R2"), "Within_0.3MGD_Pct": m(main, "All", "Within_0.3MGD_Pct"),
+        "Correct_Band_Pct": m(main, "All", "Correct_Band_Pct"), "Accuracy_Pct": m(main, "All", "Accuracy_Pct"),
+        "Correct_Band_Wet_Pct": m(main, "Wet", "Correct_Band_Pct"),
         "MAE_Dry": m(main, "Dry", "MAE"), "Bias_Dry": m(main, "Dry", "Bias"),
         "MAE_Wet": m(main, "Wet", "MAE"), "Bias_Wet": m(main, "Wet", "Bias"), "R2_Wet": m(main, "Wet", "R2"),
         "MAE_HighFlow": m(main, high, "MAE"), "Bias_HighFlow": m(main, high, "Bias"),
@@ -250,6 +255,9 @@ def run(predictions: Path, label: str, context: pd.DataFrame = None) -> dict:
         ("Bias", "Mean error, MGD. Systematic over (+) or under (-) prediction."),
         ("R2", "Share of day-to-day variance explained. Dominated by the largest days."),
         ("Within 0.3 MGD / 20%", "Share of days whose prediction is within that tolerance."),
+        ("Correct band", "Share of days predicted between 0.2 MGD under and 0.3 MGD over the observed flow "
+                         "(agreed reporting tolerance, e.g. observed 1.7 -> 1.5 to 2.0 counts)."),
+        ("Accuracy", "100% minus the mean absolute percent error (MAPE)."),
         ("Wet day", f"Rain > {WET_IN:g} in on the day or the day before (max of plant gauge and Open-Meteo)."),
         ("Peaking factor", "Observed flow / 60-day dry-weather median level. Removes year-to-year baseline drift."),
         ("CDF gap Pxx", "Predicted minus observed flow at the same percentile of each distribution. "

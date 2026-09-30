@@ -3,8 +3,15 @@
 A single-page dashboard over the Phase 6 flow model and the soil-saturation model
 for the Richmond Regional WWTF. React 18 + Vite + Tailwind + Recharts.
 
-The page is a **retrospective viewer over a pre-computed bundle**, not a live
-feed. Nothing in it calls the model.
+The page has two parts, both reading a pre-computed bundle (nothing calls the
+model live):
+
+- **Rainfall forecast → predicted flow** (top): the user enters forecast daily
+  rainfall, prior 30-day rainfall and the current dry-weather flow; the page
+  interpolates the rating curve from `scripts/rating_curve.py`
+  (`output/21_wet_weather_review/rating_curve/rating_curve_tool.json`) to give
+  predicted flow for that day and the day after, with the middle-50% range.
+- **How the model performed on past days**: the retrospective 2024 test view.
 
 ---
 

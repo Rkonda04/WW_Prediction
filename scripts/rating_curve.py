@@ -83,7 +83,9 @@ def main():
     cols = meta["features"]
     model = xgb.XGBRegressor()
     model.load_model(p6.OUT_DIR / "production_model.json")
-    f, _, _ = p6.build_frame(*p6.load_inputs())
+    inputs = p6.load_inputs()
+    rain = inputs[2]
+    f, _, _ = p6.build_frame(*inputs)
     f = f[f[cols + ["recent_level", "flow_true", "target_excess"]].notna().all(axis=1)]
 
     base = f[(f["rainfall_t"] <= wx.tsm.WET) & (f["rain_lag1"] <= wx.tsm.WET)]
@@ -116,6 +118,24 @@ def main():
     obs = pd.DataFrame(obs)
 
     curve.to_csv(OUT_DIR / "rating_curve.csv", index=False)
+    last, last_date = f.iloc[-1], f.index[-1]
+    tool = {
+        "rain_steps_in": [float(r) for r in RAIN_STEPS],
+        "p99_rain_in": round(p99, 2),
+        "classes": [{
+            "name": name, "ante_lo_in": lo, "ante_hi_in": None if np.isinf(hi) else hi,
+            **{k: [round(float(v), 3) for v in curve.loc[curve["Antecedent"] == name, col]]
+               for k, col in (("day_of", "Added_Flow_DayOf_MGD"), ("day_of_p25", "DayOf_P25"),
+                              ("day_of_p75", "DayOf_P75"), ("day_after", "Added_Flow_DayAfter_MGD"),
+                              ("day_after_p25", "DayAfter_P25"), ("day_after_p75", "DayAfter_P75"))},
+        } for name, lo, hi in ANTECEDENT],
+        # State as of the last recorded day, i.e. what a forecast for the following day starts from.
+        "latest_state": {"date": last_date.strftime("%Y-%m-%d"),
+                         "dry_level_mgd": round(float(last["recent_level"]), 3),
+                         "ante_30d_in": round(float(rain.loc[last_date - pd.Timedelta(days=29):last_date].sum()), 2)},
+        "model": f"Phase 6 production model, fitted {meta['trained_on']}",
+    }
+    (OUT_DIR / "rating_curve_tool.json").write_text(json.dumps(tool, indent=1), encoding="utf-8")
     notes = pd.DataFrame({"Note": [
         f"Model: Phase 6 production model ({meta['feature_set']}, {len(cols)} features), fitted {meta['trained_on']}.",
         f"Added flow = predicted flow minus the 60-day dry-weather level. Total flow = current dry-weather level + added flow "

@@ -6,6 +6,7 @@ Reads (relative to the WW project root, i.e. app/..):
   output/22_phase6_gauge_network/test_scores.csv           - the model's own scorecard
   output/21_wet_weather_review/gauge_network_daily.csv     - the model's rain input
   output/14_saturation_model/saturation_timeseries.csv     - saturation index + class
+  output/21_wet_weather_review/rating_curve/rating_curve_tool.json - rainfall-to-flow rating curve
 
 Writes:
   app/src/data/predictions.json
@@ -27,6 +28,7 @@ MODEL_DIR = ROOT / "output" / "22_phase6_gauge_network"
 PRED_CSV = MODEL_DIR / "test_predictions_2024.csv"
 SCORES_CSV = MODEL_DIR / "test_scores.csv"
 RAIN_CSV = ROOT / "output" / "21_wet_weather_review" / "gauge_network_daily.csv"
+RATING_JSON = ROOT / "output" / "21_wet_weather_review" / "rating_curve" / "rating_curve_tool.json"
 SAT_CSV = ROOT / "output" / "14_saturation_model" / "saturation_timeseries.csv"
 
 OUT_JSON = Path(__file__).resolve().parents[1] / "src" / "data" / "predictions.json"
@@ -235,6 +237,7 @@ def main():
         "metrics": metrics,
         "validation": checks,
         "predictions": records,
+        "rating_curve": json.loads(RATING_JSON.read_text(encoding="utf-8")),
         "saturation_history": sat_hist,
     }
 

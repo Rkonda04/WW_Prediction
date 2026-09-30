@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "RRWWTF flow prediction dashboard - Phase 5 model + saturation state",
+  "description": "RRWWTF flow prediction dashboard - Phase 6 model, rainfall forecast tool",
   "scripts": {
     "data": "python scripts/build_data.py",
     "dev": "vite",
