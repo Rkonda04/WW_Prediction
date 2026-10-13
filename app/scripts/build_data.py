@@ -7,6 +7,8 @@ Reads (relative to the WW project root, i.e. app/..):
   output/21_wet_weather_review/gauge_network_daily.csv     - the model's rain input
   output/14_saturation_model/saturation_timeseries.csv     - saturation index + class
   output/21_wet_weather_review/rating_curve/rating_curve_tool.json - rainfall-to-flow rating curve
+  output/21_wet_weather_review/scorecard/scorecard_history.csv     - Phase 5 vs Phase 6 scorecard
+  output/23_seven_day_forecast/forecast_tool.json          - 7-day forecast model + error ranges
 
 Writes:
   app/src/data/predictions.json
@@ -29,6 +31,11 @@ PRED_CSV = MODEL_DIR / "test_predictions_2024.csv"
 SCORES_CSV = MODEL_DIR / "test_scores.csv"
 RAIN_CSV = ROOT / "output" / "21_wet_weather_review" / "gauge_network_daily.csv"
 RATING_JSON = ROOT / "output" / "21_wet_weather_review" / "rating_curve" / "rating_curve_tool.json"
+SCORECARD_CSV = ROOT / "output" / "21_wet_weather_review" / "scorecard" / "scorecard_history.csv"
+# Hand-entered scorecard from a run made outside this project. When present it is shown
+# instead of scorecard_history.csv, and labelled as reported rather than reproduced.
+REPORTED_JSON = Path(__file__).resolve().parent / "reported_scorecard.json"
+FORECAST_JSON = ROOT / "output" / "23_seven_day_forecast" / "forecast_tool.json"
 SAT_CSV = ROOT / "output" / "14_saturation_model" / "saturation_timeseries.csv"
 
 OUT_JSON = Path(__file__).resolve().parents[1] / "src" / "data" / "predictions.json"
@@ -72,6 +79,27 @@ def score_block(df):
         "within_0_1": float(np.mean(np.abs(err) <= 0.1)),
         "within_0_5": float(np.mean(np.abs(err) <= 0.5)),
     }
+
+
+def phase_comparison():
+    """Latest pooled out-of-sample scorecard run for each phase (scripts/scorecard.py)."""
+    hist = pd.read_csv(SCORECARD_CSV)
+    keys = {"n_days": "N_Days", "mae_all": "MAE_All", "r2_all": "R2_All", "accuracy_pct": "Accuracy_Pct",
+            "within_0_3_pct": "Within_0.3MGD_Pct", "correct_band_pct": "Correct_Band_Pct", "mae_wet": "MAE_Wet",
+            "r2_wet": "R2_Wet", "bias_high_flow": "Bias_HighFlow", "p99_gap_wet": "CDF_Gap_P99_Wet"}
+    out = {"years": "2020, 2021, 2022, 2024"}
+    for name, label in (("phase5", "Phase5_shipped"), ("phase6", "Phase6_gauge_network")):
+        row = hist[hist["Label"] == label].iloc[-1]
+        out[name] = {k: int(row[c]) if k == "n_days" else round(float(row[c]), 6) for k, c in keys.items()}
+        out[name]["run_time"] = row["Run_Time"]
+    if REPORTED_JSON.exists():
+        reported = json.loads(REPORTED_JSON.read_text(encoding="utf-8"))
+        for name in ("phase5", "phase6"):
+            for k, v in reported[name].items():
+                if abs(v - out[name][k]) > 0.006:
+                    print(f"  WARNING: reported {name} {k} = {v} but this project's scorecard gives {out[name][k]:.3f}")
+        return {"reported": True, "source": reported["source"], "phase5": reported["phase5"], "phase6": reported["phase6"]}
+    return out
 
 
 def main():
@@ -238,6 +266,8 @@ def main():
         "validation": checks,
         "predictions": records,
         "rating_curve": json.loads(RATING_JSON.read_text(encoding="utf-8")),
+        "comparison": phase_comparison(),
+        "forecast": json.loads(FORECAST_JSON.read_text(encoding="utf-8")),
         "saturation_history": sat_hist,
     }
 

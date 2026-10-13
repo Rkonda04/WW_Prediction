@@ -23,6 +23,9 @@ output/
 # cannot render without it.
 !app/src/data/predictions.json
 
+# The header logo is part of the app, not a client deliverable.
+!app/public/civitas-logo.png
+
 # ---------------------------------------------------------------------------
 # Build artifacts and dependencies
 # ---------------------------------------------------------------------------

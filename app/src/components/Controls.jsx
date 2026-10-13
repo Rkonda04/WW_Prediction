@@ -1,7 +1,5 @@
-import { Toggle } from './ui'
-
 /** One control: the day being inspected. Everything else was removed. */
-export default function Controls({ dark, onDark, selectedDate, onSelectedDate, dayOptions }) {
+export default function Controls({ selectedDate, onSelectedDate, dayOptions }) {
   return (
     <div className="card mb-4 flex flex-wrap items-center justify-between gap-3 px-4 py-3">
       <div className="flex items-center gap-2">
@@ -21,8 +19,6 @@ export default function Controls({ dark, onDark, selectedDate, onSelectedDate, d
           ))}
         </select>
       </div>
-
-      <Toggle checked={dark} onChange={onDark} label="Dark" />
     </div>
   )
 }

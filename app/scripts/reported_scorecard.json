@@ -1,0 +1,7 @@
+{
+ "source": "Reported by R. Konda on 2026-10-13 from a training run on another machine. The model files and predictions from that run are not in this project, so these figures are not reproduced by scripts/scorecard.py.",
+ "phase5": {"mae_all": 0.229, "r2_all": 0.62, "accuracy_pct": 96.5, "within_0_3_pct": 87.0, "correct_band_pct": 82.0,
+            "mae_wet": 0.298, "r2_wet": 0.60, "bias_high_flow": -0.81, "p99_gap_wet": -0.71},
+ "phase6": {"mae_all": 0.187, "r2_all": 0.74, "accuracy_pct": 97.7, "within_0_3_pct": 90.0, "correct_band_pct": 85.0,
+            "mae_wet": 0.254, "r2_wet": 0.72, "bias_high_flow": -0.51, "p99_gap_wet": -0.23}
+}

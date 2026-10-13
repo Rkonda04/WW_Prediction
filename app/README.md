@@ -3,9 +3,24 @@
 A single-page dashboard over the Phase 6 flow model and the soil-saturation model
 for the Richmond Regional WWTF. React 18 + Vite + Tailwind + Recharts.
 
-The page has two parts, both reading a pre-computed bundle (nothing calls the
-model live):
+The page follows the Civitas water-demand forecast app: purple header, a "today"
+card with the predicted flow, a strip of seven day cards (tap one to show it in
+the top card), and the rest behind "View ..." rows. Tapping the top card opens
+the plant inputs, chart and day-by-day table.
 
+The page has three parts. The model outputs are a pre-computed bundle; only the
+weather forecast is fetched live:
+
+- **7-day flow forecast** (top): the Phase 6 production model, exported as its
+  trees by `scripts/forecast_7day.py` and rolled forward in the browser
+  (`src/lib/forecast.js`) - day 1 from the measured state, each later day from
+  the previous day's prediction. Rain and minimum temperature for the past 31
+  and next 7 days come from the Open-Meteo forecast API for Richmond and can be
+  overwritten; the user enters the current dry-weather flow and the last three
+  days' measured flow, because plant flow is not a live feed. The likely range
+  per day is the 10th-90th percentile of the backtest error at that lead day
+  (`output/23_seven_day_forecast/lead_time_scores.csv`), wet and dry separately.
+  That backtest used recorded rainfall, so real rain-forecast error is extra.
 - **Rainfall forecast → predicted flow** (top): the user enters forecast daily
   rainfall, prior 30-day rainfall and the current dry-weather flow; the page
   interpolates the rating curve from `scripts/rating_curve.py`
@@ -21,7 +36,7 @@ model live):
 cd app
 npm install
 npm run data     # regenerate src/data/predictions.json from the model outputs
-npm run dev      # http://localhost:5173
+npm run dev      # http://localhost:5173 (or the next free port)
 npm run build    # production bundle -> dist/
 npm run preview  # serve dist/ locally
 ```
@@ -123,7 +138,7 @@ than one palette flipped.
    `output/14_saturation_model/` are refreshed. From `scripts/`:
    `python fetch_wet_weather_inputs.py` (new gauge data), then
    `python train_phase6_model.py` (also appends the run to the scorecard history),
-   then `python rating_curve.py`.
+   then `python rating_curve.py` and `python forecast_7day.py`.
 2. `npm run data` — watch for `WARNING:` lines, which mean the recomputed metrics
    no longer match the model's own scorecard.
 3. `npm run build`, then redeploy `dist/`.
@@ -165,6 +180,7 @@ app/
 ├── src/
 │   ├── Dashboard.jsx           layout, filter state, theme plumbing
 │   ├── lib/metrics.js          metric definitions, formatters, bands
+│   ├── lib/forecast.js         7-day rollout of the model + weather fetch
 │   ├── data/predictions.json   generated - do not edit by hand
 │   └── components/             one file per panel, plus shared ui.jsx
 ├── tailwind.config.js          Pearland design tokens

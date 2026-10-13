@@ -72,7 +72,7 @@ export default function RainfallForecast({ curve, theme }) {
       title="Rainfall forecast → predicted flow"
       subtitle="Enter forecast rainfall for a day to get the expected plant flow for that day and the next"
     >
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,340px)_1fr]">
+      <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-4">
           <Field
             id="fc-rain"

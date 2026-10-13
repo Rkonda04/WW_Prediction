@@ -127,6 +127,27 @@ export function Legend({ items }) {
   )
 }
 
+/** A card that is only its title until opened, like a disclosure row. */
+export function Collapsible({ title, children }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div>
+      <button
+        type="button"
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+        className="card flex w-full items-center gap-4 px-7 py-6 text-left text-base font-bold text-primary dark:text-primary-light"
+      >
+        <span aria-hidden="true" className={`text-xs transition-transform ${open ? 'rotate-90' : ''}`}>
+          ▶
+        </span>
+        {title}
+      </button>
+      {open && <div className="mt-3">{children}</div>}
+    </div>
+  )
+}
+
 export function Toggle({ checked, onChange, label }) {
   return (
     <button
