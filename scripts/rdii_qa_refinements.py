@@ -182,7 +182,6 @@ def rdii_share_of_treated_volume(full: pd.DataFrame) -> pd.DataFrame:
 # ---------------------------------------------------------------------------
 # 4. Outlier / long-lag event inspection
 # ---------------------------------------------------------------------------
-
 def classify_event_pattern(event_row, full: pd.DataFrame) -> str:
     if not event_row["Complete"]:
         return "possible baseline issue (event window touches a data gap)"
