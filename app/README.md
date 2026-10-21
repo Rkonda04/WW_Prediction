@@ -30,7 +30,6 @@ weather forecast is fetched live:
 ```bash
 cd app
 npm install
-cp .env.example .env.local   # then set the dashboard sign-in (git-ignored)
 npm run data     # regenerate src/data/predictions.json from the model outputs
 npm run dev      # http://localhost:5173 (or the next free port)
 npm run build    # production bundle -> dist/
