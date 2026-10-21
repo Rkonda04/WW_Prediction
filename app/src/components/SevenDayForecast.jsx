@@ -60,7 +60,7 @@ const skyOf = (rain) => (rain > 0.1 ? '\u{1F327}\uFE0F' : rain > 0 ? '\u{1F326}\
 /**
  * Predicted plant flow for today and the next six days.
  *
- * Runs the Phase 6 production model forward in the browser (src/lib/forecast.js,
+ * Runs the Phase 7 production model forward in the browser (src/lib/forecast.js,
  * mirroring scripts/forecast_7day.py). Rain and temperature come from the
  * Open-Meteo forecast for Richmond and can be overwritten; the plant's current
  * flows are entered by the user because the flow record is not a live feed.
@@ -443,7 +443,7 @@ export default function SevenDayForecast({ tool, theme }) {
         <section className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-700 dark:bg-slate-800/40">
           <div className="text-xs font-bold text-slate-700 dark:text-slate-200">About This Prediction</div>
           <p className="mt-1 text-xs leading-snug text-slate-500 dark:text-slate-400">
-            Daily totals predicted by the Phase 6 model, trained on Richmond plant flow from 2018 to 2024. The range
+            Daily totals predicted by the Phase 7 model, trained on Richmond plant flow from 2018 to 2024. The range
             is where 8 in 10 past predictions landed around the measured flow. Hourly flow is not predicted.
           </p>
         </section>

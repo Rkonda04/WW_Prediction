@@ -1,4 +1,4 @@
-// Seven-day flow forecast: the Phase 6 production model, rolled forward in the
+// Seven-day flow forecast: the Phase 7 production model, rolled forward in the
 // browser. Mirrors rollout() in scripts/forecast_7day.py - day 1 is predicted
 // from the measured state, each later day from the previous day's prediction.
 // The dry-weather level and its slope are held at their start-day values.
@@ -69,6 +69,9 @@ export function rollForward(tool, { start, level, slope = 0, flowLag1, excess, r
       doy_cos: Math.cos((2 * Math.PI * doy) / 365.25),
       rain_x_ante30: rain[i] * ante30,
       rain_lag1_x_ante30: rain[i - 1] * ante30,
+      // Phase 7 also reads MRMS rain; there is one rain forecast, so it feeds both inputs.
+      mrms_t: rain[i],
+      mrms_lag1: rain[i - 1],
     }
     const added = predictAdded(tool, tool.features.map((name) => f[name]))
     const flow = level + added

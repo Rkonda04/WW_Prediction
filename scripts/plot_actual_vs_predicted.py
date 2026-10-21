@@ -1,7 +1,7 @@
 """
 RRWWTF Observed vs. Predicted Daily Flow -- Time-Series Figures
 
-Reads the Phase-5 out-of-sample predictions written by
+Reads the Phase-7 out-of-sample predictions written by
 `scripts/train_screened_model.py` and renders the two report figures:
 
     04_actual_vs_predicted_all_years.png
@@ -20,8 +20,8 @@ not exist yet. A single axis would draw long straight segments across those
 gaps that look like data. Faceting by year is the honest layout.
 
 Inputs (read-only):
-    output/13_screened_model/out_of_sample_predictions_all_years.csv
-    output/13_screened_model/screened_days.csv
+    output/26_phase7_mrms_rain/out_of_sample_predictions_all_years.csv
+    output/26_phase7_mrms_rain/screened_days.csv
 
 Usage:
     python scripts/plot_actual_vs_predicted.py
@@ -38,7 +38,7 @@ import pandas as pd
 from matplotlib.lines import Line2D
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-MODEL_DIR = BASE_DIR / "output" / "13_screened_model"
+MODEL_DIR = BASE_DIR / "output" / "26_phase7_mrms_rain"
 
 OOS_CSV = MODEL_DIR / "out_of_sample_predictions_all_years.csv"
 SCREENED_CSV = MODEL_DIR / "screened_days.csv"

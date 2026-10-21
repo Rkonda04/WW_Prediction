@@ -1,7 +1,7 @@
 """
-Seven-day flow forecast from the Phase 6 model.
+Seven-day flow forecast from the Phase 7 model.
 
-The Phase 6 model predicts one day from yesterday's flow. A 7-day forecast
+The Phase 7 model predicts one day from yesterday's flow. A 7-day forecast
 rolls it forward: day 1 is predicted from the measured state, and each later
 day is predicted from the previous day's PREDICTION (flow lag and the three
 excess lags), with that day's forecast rainfall and minimum temperature.
@@ -12,7 +12,7 @@ the 60-day dry-weather level and its 30-day slope, both as of the start day.
 Backtest (what this script measures):
   * Every start day whose state is complete, in each out-of-sample year --
     2020, 2021, 2022 by the expanding-window CV folds and 2024 held out, each
-    year rolled out by a model that never saw it (Phase 6 hyperparameters).
+    year rolled out by a model that never saw it (Phase 7 hyperparameters).
   * Rain and temperature for the 7 days are the RECORDED values, i.e. a perfect
     weather forecast. Real forecasts add rainfall error on top of these scores.
   * Scored per lead day against measured flow, beside two no-skill references:
@@ -23,7 +23,7 @@ Outputs (output/23_seven_day_forecast/):
     backtest_predictions.csv    every start day x lead day
     forecast_tool.json          the production model's trees + error ranges +
                                 latest state, read by the dashboard (app/)
-Usage (after scripts/train_phase6_model.py):
+Usage (after scripts/train_phase7_model.py):
     python scripts/forecast_7day.py
 """
 
@@ -35,7 +35,7 @@ import pandas as pd
 import xgboost as xgb
 
 import model_eval
-import train_phase6_model as p6
+import train_phase7_model as p7
 import train_screened_model as tsm
 import wet_weather_experiments as wx
 
@@ -106,11 +106,11 @@ def predict_trees(tool: dict, x: np.ndarray) -> float:
 
 def main():
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    print("SEVEN-DAY FORECAST -- recursive rollout of the Phase 6 model\n")
-    meta = json.loads((p6.OUT_DIR / "production_features.json").read_text(encoding="utf-8"))
+    print("SEVEN-DAY FORECAST -- recursive rollout of the Phase 7 model\n")
+    meta = json.loads((p7.OUT_DIR / "production_features.json").read_text(encoding="utf-8"))
     cols, params, n_est = meta["features"], meta["params"], meta["n_estimators"]
-    inputs = p6.load_inputs()
-    feat, _, _ = p6.build_frame(*inputs)
+    inputs = p7.load_inputs()
+    feat = p7.candidates(*inputs)[0][meta["feature_set"]][0]
     complete, _ = tsm.drop_incomplete(feat, cols=cols)
     cdates = complete.index.to_series().reset_index(drop=True)
     fdates = feat.index.to_series().reset_index(drop=True)
@@ -157,7 +157,7 @@ def main():
     scores.round(4).to_csv(OUT_DIR / "lead_time_scores.csv", index=False)
 
     production = xgb.XGBRegressor()
-    production.load_model(p6.OUT_DIR / "production_model.json")
+    production.load_model(p7.OUT_DIR / "production_model.json")
     tool = export_trees(production)
     check = complete[cols].sample(200, random_state=0).values
     worst = max(abs(predict_trees(tool, x) - float(production.predict(x[None])[0])) for x in check)
@@ -180,7 +180,7 @@ def main():
                          "flow_mgd": round(float(last["flow_true"]), 3)},
         # Used only when the live weather feed cannot be reached.
         "tmin_normal_f_by_month": [round(float(v), 1) for v in tmin.groupby(tmin.index.month).median()],
-        "model": f"Phase 6 production model, fitted {meta['trained_on']}",
+        "model": f"Phase 7 production model, fitted {meta['trained_on']}",
     }
     (OUT_DIR / "forecast_tool.json").write_text(json.dumps(tool, separators=(",", ":")), encoding="utf-8")
 

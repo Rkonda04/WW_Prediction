@@ -21,7 +21,7 @@ Outputs (output/21_wet_weather_review/scorecard/):
     scorecard_history.csv        one row per label; rerunning a label replaces its row
 
 Usage:
-    python scripts/scorecard.py                                   # Phase 5 shipped model
+    python scripts/scorecard.py                                   # Phase 7 production model
     python scripts/scorecard.py --predictions path.csv --label my_variant
 """
 
@@ -41,8 +41,8 @@ import train_screened_model as tsm
 BASE_DIR = Path(__file__).resolve().parent.parent
 OUT_DIR = BASE_DIR / "output" / "21_wet_weather_review" / "scorecard"
 HISTORY_CSV = OUT_DIR / "scorecard_history.csv"
-DEFAULT_PREDICTIONS = BASE_DIR / "output" / "13_screened_model" / "out_of_sample_predictions_all_years.csv"
-DEFAULT_LABEL = "Phase5_shipped"
+DEFAULT_PREDICTIONS = BASE_DIR / "output" / "26_phase7_mrms_rain" / "out_of_sample_predictions_all_years.csv"
+DEFAULT_LABEL = "Phase7_mrms_rain"
 
 WET_IN = 0.1
 TOL_MGD = 0.3

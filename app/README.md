@@ -1,6 +1,6 @@
 # RRWWTF Flow Prediction Dashboard
 
-A single-page dashboard over the Phase 6 flow model and the soil-saturation model
+A single-page dashboard over the Phase 7 flow model and the soil-saturation model
 for the Richmond Regional WWTF. React 18 + Vite + Tailwind + Recharts.
 
 The page follows the Civitas water-demand forecast app: purple header, a "today"
@@ -11,7 +11,7 @@ the plant inputs, chart and day-by-day table.
 The page has three parts. The model outputs are a pre-computed bundle; only the
 weather forecast is fetched live:
 
-- **7-day flow forecast** (top): the Phase 6 production model, exported as its
+- **7-day flow forecast** (top): the Phase 7 production model, exported as its
   trees by `scripts/forecast_7day.py` and rolled forward in the browser
   (`src/lib/forecast.js`) - day 1 from the measured state, each later day from
   the previous day's prediction. Rain and minimum temperature for the past 31
@@ -52,8 +52,8 @@ writes one JSON bundle that the app imports at build time:
 
 | Source | Used for |
 |---|---|
-| `output/22_phase6_gauge_network/test_predictions_2024.csv` | actual vs predicted flow, rainfall, Tmin |
-| `output/22_phase6_gauge_network/test_scores.csv` | cross-check only — never displayed directly |
+| `output/26_phase7_mrms_rain/test_predictions_2024.csv` | actual vs predicted flow, rainfall, Tmin |
+| `output/26_phase7_mrms_rain/test_scores.csv` | cross-check only — never displayed directly |
 | `output/14_saturation_model/saturation_timeseries.csv` | saturation index, Wet/Dry label, precipitation |
 
 The script **recomputes** every metric from the raw predictions rather than
@@ -102,7 +102,7 @@ rain rule). The dashboard raises this as a standing alert. Dry-day output should
 not drive capacity or compliance decisions.
 
 **"Prediction confidence" is a presentation heuristic, not a model output.** The
-Phase 6 model emits a point estimate with no per-day uncertainty. The confidence
+Phase 7 model emits a point estimate with no per-day uncertainty. The confidence
 chip keys off the one thing validation established — that accuracy splits by rain
 state — and is labelled as such in the code (`src/lib/metrics.js`).
 
@@ -134,17 +134,18 @@ than one palette flipped.
 
 ## Updating with new predictions
 
-1. Retrain / rerun the model so `output/22_phase6_gauge_network/` and
+1. Retrain / rerun the model so `output/26_phase7_mrms_rain/` and
    `output/14_saturation_model/` are refreshed. From `scripts/`:
    `python fetch_wet_weather_inputs.py` (new gauge data), then
-   `python train_phase6_model.py` (also appends the run to the scorecard history),
+   `python train_phase7_model.py` (also appends the run to the scorecard history; delete
+   `output/26_phase7_mrms_rain/mrms_daily_9pt.csv` first to re-download MRMS rain),
    then `python rating_curve.py` and `python forecast_7day.py`.
 2. `npm run data` — watch for `WARNING:` lines, which mean the recomputed metrics
    no longer match the model's own scorecard.
 3. `npm run build`, then redeploy `dist/`.
 
 Weekly or daily batch refresh is the intended cadence. Making this real-time
-would mean standing the Phase 6 model up behind an endpoint and having the page
+would mean standing the Phase 7 model up behind an endpoint and having the page
 fetch instead of importing the bundle — the components already take their data as
 props, so only `src/Dashboard.jsx` would change.
 

@@ -5,7 +5,7 @@ Answers "for a forecast of X inches tomorrow, what flow should the plant
 expect?" as a simple table and chart.
 
 Method (model-derived, i.e. what the tool itself would predict):
-  1. Use the Phase 6 production model (output/22_phase6_gauge_network/
+  1. Use the Phase 7 production model (output/26_phase7_mrms_rain/
      production_model.json), fitted on every available year 2018-2024 --
      the model a forward prediction would use.
   2. Take every real day with a dry lead-in (no rain > 0.1 in on that day or
@@ -28,7 +28,7 @@ the 99th-percentile rain day are flagged.
 
 Outputs (output/21_wet_weather_review/rating_curve/):
     rating_curve.csv, rating_curve.xlsx, rating_curve.png
-Usage (after scripts/train_phase6_model.py):
+Usage (after scripts/train_phase7_model.py):
     python scripts/rating_curve.py
 """
 
@@ -42,7 +42,7 @@ import numpy as np
 import pandas as pd
 import xgboost as xgb
 
-import train_phase6_model as p6
+import train_phase7_model as p7
 import wet_weather_experiments as wx
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -58,6 +58,8 @@ def storm(base: pd.DataFrame, cols, model, r: float):
     x = base[cols].copy()
     x["rainfall_t"] = r
     x["rain_sqrt_t"] = np.sqrt(r)
+    if "mrms_t" in cols:  # one storm feeds every rain input
+        x["mrms_t"] = r
     added_t = model.predict(wx.add_interactions(x)[cols].values)
 
     y = base[cols].copy()
@@ -65,6 +67,8 @@ def storm(base: pd.DataFrame, cols, model, r: float):
     y["rain_sqrt_t"] = 0.0
     y["rain_lag2"] = base["rain_lag1"]
     y["rain_lag1"] = r
+    if "mrms_t" in cols:
+        y["mrms_t"], y["mrms_lag1"] = 0.0, r
     y["flow_lag1"] = base["recent_level"] + added_t
     y["excess_lag3"] = base["excess_lag2"]
     y["excess_lag2"] = base["excess_lag1"]
@@ -79,13 +83,13 @@ def storm(base: pd.DataFrame, cols, model, r: float):
 
 def main():
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    meta = json.loads((p6.OUT_DIR / "production_features.json").read_text(encoding="utf-8"))
+    meta = json.loads((p7.OUT_DIR / "production_features.json").read_text(encoding="utf-8"))
     cols = meta["features"]
     model = xgb.XGBRegressor()
-    model.load_model(p6.OUT_DIR / "production_model.json")
-    inputs = p6.load_inputs()
+    model.load_model(p7.OUT_DIR / "production_model.json")
+    inputs = p7.load_inputs()
     rain = inputs[2]
-    f, _, _ = p6.build_frame(*inputs)
+    f = p7.candidates(*inputs)[0][meta["feature_set"]][0]
     f = f[f[cols + ["recent_level", "flow_true", "target_excess"]].notna().all(axis=1)]
 
     base = f[(f["rainfall_t"] <= wx.tsm.WET) & (f["rain_lag1"] <= wx.tsm.WET)]
@@ -133,11 +137,11 @@ def main():
         "latest_state": {"date": last_date.strftime("%Y-%m-%d"),
                          "dry_level_mgd": round(float(last["recent_level"]), 3),
                          "ante_30d_in": round(float(rain.loc[last_date - pd.Timedelta(days=29):last_date].sum()), 2)},
-        "model": f"Phase 6 production model, fitted {meta['trained_on']}",
+        "model": f"Phase 7 production model, fitted {meta['trained_on']}",
     }
     (OUT_DIR / "rating_curve_tool.json").write_text(json.dumps(tool, indent=1), encoding="utf-8")
     notes = pd.DataFrame({"Note": [
-        f"Model: Phase 6 production model ({meta['feature_set']}, {len(cols)} features), fitted {meta['trained_on']}.",
+        f"Model: Phase 7 production model ({meta['feature_set']}, {len(cols)} features), fitted {meta['trained_on']}.",
         f"Added flow = predicted flow minus the 60-day dry-weather level. Total flow = current dry-weather level + added flow "
         f"(2024 median dry-weather level {level_2024:.2f} MGD, used in the example column).",
         "Day of = the plant day (morning to morning reading) on which the rain falls. Day after assumes no further rain.",
@@ -199,7 +203,7 @@ def main():
     plt.close(fig)
 
     pd.set_option("display.width", 200)
-    print(f"Phase 6 production model: {len(base):,} start days; rain P99 {p99:.2f} in, max {rmax:.2f} in")
+    print(f"Phase 7 production model: {len(base):,} start days; rain P99 {p99:.2f} in, max {rmax:.2f} in")
     print(curve.pivot(index="Rain_in", columns="Antecedent", values="Added_Flow_DayOf_MGD")[[a[0] for a in ANTECEDENT]].round(2).to_string())
     print(obs.round(2).to_string(index=False))
 
