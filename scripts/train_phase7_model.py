@@ -17,6 +17,9 @@ Decided before scoring:
     never against flow.
   * The no-rain spike screen asks for no rain in ANY record -- max(plant,
     Open-Meteo, gauge network, MRMS).
+  * Anomaly rule (agreed): flow > 3 MGD with no rain > 0.1 in on the day or the
+    day before in the model's rain inputs (gauge network, MRMS), freezes
+    excepted, is screened the same way.
   * Three candidates on one shared row set; CV on 2018-2022 picks one:
       gauge_rain_x_antecedent        Phase 6 as shipped (control)
       avg_rain_x_antecedent          rain = mean(gauge network, MRMS)
@@ -61,6 +64,7 @@ SHIFTS = [-1, 0, 1]
 PHASE6_FEATURES = list(tsm.FEATURE_COLUMNS) + wx.INTERACTION_FEATURES
 MRMS_FEATURES = ["mrms_t", "mrms_lag1"]
 CONTROL = "gauge_rain_x_antecedent"
+HIGH_NO_RAIN_MGD = 3.0  # agreed anomaly rule: no rain and flow above 3 MGD
 
 
 def fetch_mrms() -> pd.Series:
@@ -100,8 +104,24 @@ def load_inputs():
     return ts0, om, net_rain, mrms, screen
 
 
-def build_frame(ts0, om, rain, screen_rain, mrms=None):
+def high_flow_no_rain(ts0, om, model_rain):
+    """Flow above HIGH_NO_RAIN_MGD with no rain > 0.1 in on the day or the day before in the model's own
+    rain inputs (gauge network, MRMS), freezes excepted (burst pipes and dripping taps are real flow).
+    Catches e.g. 2022-03-10 (5.53 MGD), which the any-record screen kept because of one uncorroborated
+    plant-gauge reading."""
+    tmin = om["temperature_2m_min"]
+    dry2 = model_rain.rolling(2, min_periods=2).max() <= tsm.NO_RAIN_IN
+    nofreeze = (tmin >= tsm.FREEZE_F) & (tmin.shift(1) >= tsm.FREEZE_F)
+    return (ts0["Total_Treated_MGD"] > HIGH_NO_RAIN_MGD) & dry2 & nofreeze
+
+
+def build_frame(ts0, om, rain, screen_rain, mrms=None, extra_flag=None):
     _, flagged, detail = tsm.apply_screen(ts0, om, screen_rain)
+    if extra_flag is not None:
+        extra = extra_flag & ~flagged
+        detail = pd.concat([detail.assign(Rule="no_rain_spike"),
+                            pd.DataFrame({"Value_MGD": ts0["Total_Treated_MGD"]}).loc[extra].assign(Rule="high_flow_no_rain")]).sort_index()
+        flagged = flagged | extra
     ts = ts0.assign(Rainfall_in_Corrected=rain)
     ts.loc[flagged, "Total_Treated_MGD"] = np.nan
     feat = wx.add_interactions(tsm.build_feature_frame(ts, om, ts0["Total_Treated_MGD"]))
@@ -112,8 +132,9 @@ def build_frame(ts0, om, rain, screen_rain, mrms=None):
 
 def candidates(ts0, om, net_rain, mrms, screen):
     """name -> (frame, feature columns, rain input description)."""
-    f_net, flagged, detail = build_frame(ts0, om, net_rain, screen, mrms)
-    f_avg, _, _ = build_frame(ts0, om, (net_rain + mrms) / 2, screen, mrms)
+    extra = high_flow_no_rain(ts0, om, np.fmax(net_rain, mrms))
+    f_net, flagged, detail = build_frame(ts0, om, net_rain, screen, mrms, extra)
+    f_avg, _, _ = build_frame(ts0, om, (net_rain + mrms) / 2, screen, mrms, extra)
     return {
         CONTROL: (f_net, PHASE6_FEATURES, "nearby gauge network mean (Phase 6)"),
         "avg_rain_x_antecedent": (f_avg, PHASE6_FEATURES, "mean of gauge network and MRMS (inches, plant-day aligned)"),
@@ -242,8 +263,9 @@ def write_findings(all_scores, detail, set_name, cols, params, n_est, cv_rows, i
         *[f"- Candidate `{k}`: best avg CV RMSE {v:.4f}" for k, v in cv.items()],
         f"- Selected `{set_name}` ({len(cols)} features), params {params}, n_estimators={n_est}.", "",
         "## Spike screen", "",
-        f"{len(detail)} days flagged (no rain > 0.1 in on t, t-1, t-2 in any record incl. MRMS, no freeze, "
-        "flow > 1.5 x dry level).", "",
+        f"{len(detail)} days flagged: no rain > 0.1 in on t, t-1, t-2 in any record incl. MRMS, no freeze, "
+        "flow > 1.5 x dry level; plus flow > 3 MGD with no rain > 0.1 in on t, t-1 in gauge network / MRMS, "
+        "no freeze (" + ", ".join(d.strftime('%Y-%m-%d') for d in detail.index[detail.get('Rule', pd.Series(dtype=str)) == 'high_flow_no_rain']) + ").", "",
         "## Top features", "",
         ", ".join(f"{r.Feature} ({r.Importance:.2f})" for r in importance.head(8).itertuples()), "",
         "## Caveats", "",
