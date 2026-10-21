@@ -8,7 +8,7 @@ card with the predicted flow, a strip of seven day cards (tap one to show it in
 the top card), and the rest behind "View ..." rows. Tapping the top card opens
 the plant inputs, chart and day-by-day table.
 
-The page has three parts. The model outputs are a pre-computed bundle; only the
+The page has two parts. The model outputs are a pre-computed bundle; only the
 weather forecast is fetched live:
 
 - **7-day flow forecast** (top): the Phase 7 production model, exported as its
@@ -21,11 +21,6 @@ weather forecast is fetched live:
   per day is the 10th-90th percentile of the backtest error at that lead day
   (`output/23_seven_day_forecast/lead_time_scores.csv`), wet and dry separately.
   That backtest used recorded rainfall, so real rain-forecast error is extra.
-- **Rainfall forecast → predicted flow** (top): the user enters forecast daily
-  rainfall, prior 30-day rainfall and the current dry-weather flow; the page
-  interpolates the rating curve from `scripts/rating_curve.py`
-  (`output/21_wet_weather_review/rating_curve/rating_curve_tool.json`) to give
-  predicted flow for that day and the day after, with the middle-50% range.
 - **How the model performed on past days**: the retrospective 2024 test view.
 
 ---
@@ -35,6 +30,7 @@ weather forecast is fetched live:
 ```bash
 cd app
 npm install
+cp .env.example .env.local   # then set the dashboard sign-in (git-ignored)
 npm run data     # regenerate src/data/predictions.json from the model outputs
 npm run dev      # http://localhost:5173 (or the next free port)
 npm run build    # production bundle -> dist/
@@ -112,19 +108,13 @@ state — and is labelled as such in the code (`src/lib/metrics.js`).
 
 ## Layout
 
-| Panel | Contents |
+| Section | Contents |
 |---|---|
-| Key metrics | Predicted flow, saturation index, confidence, data currency |
-| Flow forecast | Actual (solid) vs predicted (dashed), optional ±0.3 MGD band |
-| Saturation state | Gauge, classification, 90-day saturation trend |
-| Error analysis | Residual scatter with ±0.1 / ±0.3 / ±0.5 reference lines |
-| Model performance | Headline scores + switchable wet/dry breakdown |
-| Alerts & notes | Standing caveats, provenance, validation vs `test_scores.csv` |
-
-Interactivity: 30/60/90/All presets and a custom date range (applies to every
-panel), a day selector that drives the saturation and confidence panels, a
-tolerance-band toggle, hover tooltips on both charts, and a dark-mode toggle
-persisted per browser. Cards stack to one column on phones.
+| Today card | Predicted flow, likely range, forecast rain, Normal/High status; tap for the detailed breakdown |
+| 7-day forecast | One card per day; tap a day to show it in the top card |
+| Detailed breakdown | Why the flow is expected, comparison to dry-weather flow, plant inputs and per-day rain overrides |
+| View Previous 5 Days Predictions | Recent days' predictions |
+| View Actual vs Predicted Flow | Retrospective 2024 test chart with date-range controls |
 
 Chart colors are validated for colorblind separation and surface contrast in both
 light and dark mode; the two modes use different steps of the same hues rather

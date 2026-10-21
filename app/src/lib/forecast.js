@@ -118,31 +118,31 @@ const WEATHER_URL =
 
 /**
  * Past 36 days and next 7 days of rain and minimum temperature for Richmond, TX
- * (same point and units as scripts/openmeteo_richmond_rainfall.py).
+ * (same point and units as scripts/openmeteo_richmond_rainfall.py). Rainfall is
+ * required; any missing minimum temperature falls back to the month's normal,
+ * since the freeze effect it drives rarely matters here.
  */
-export async function fetchWeather(signal) {
+export async function fetchWeather(tool, signal) {
   const res = await fetch(WEATHER_URL, { signal })
   if (!res.ok) throw new Error(`weather feed returned ${res.status}`)
   const { daily } = await res.json()
   const n = daily.time.length
-  if (n < 43 || daily.precipitation_sum.some((v) => v == null) || daily.temperature_2m_min.some((v) => v == null)) {
-    throw new Error('weather feed returned an incomplete series')
+  if (n < 43 || daily.precipitation_sum.some((v) => v == null)) {
+    throw new Error('weather feed returned an incomplete rainfall series')
   }
+  const tmin = daily.time.map(
+    (iso, j) => daily.temperature_2m_min?.[j] ?? tool.tmin_normal_f_by_month[Number(iso.slice(5, 7)) - 1],
+  )
   return {
     start: daily.time[n - 7],
     rainPast: daily.precipitation_sum.slice(0, n - 7),
     rainNext: daily.precipitation_sum.slice(n - 7),
-    tminPast: daily.temperature_2m_min.slice(0, n - 7),
-    tminPrev: daily.temperature_2m_min[n - 8],
-    tminNext: daily.temperature_2m_min.slice(n - 7),
+    tminPast: tmin.slice(0, n - 7),
+    tminPrev: tmin[n - 8],
+    tminNext: tmin.slice(n - 7),
   }
 }
 
-/**
- * Stand-in weather when the feed is unreachable: no rain in the forecast, normal
- * temperatures for the month, and the prior-30-day total spread evenly over days
- * 6-30 back (so nothing is assumed about the last 5 days).
- */
 /**
  * The model run over the days just before `start`, from the weather recorded for
  * them. No measured flow exists for those days, so the run starts `count` days
@@ -161,6 +161,11 @@ export function hindcast(tool, { start, level, rainPast, tminPast }, count = 5) 
   })
 }
 
+/**
+ * Stand-in weather when the feed is unreachable: no rain in the forecast, normal
+ * temperatures for the month, and the prior-30-day total spread evenly over days
+ * 6-30 back (so nothing is assumed about the last 5 days).
+ */
 export function fallbackWeather(tool, start, ante30 = 0) {
   const month = (iso) => Number(iso.slice(5, 7)) - 1
   const normal = (iso) => tool.tmin_normal_f_by_month[month(iso)]

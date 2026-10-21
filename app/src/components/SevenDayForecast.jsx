@@ -45,13 +45,9 @@ function reasonsFor(d) {
       : d.ante30 < 4
         ? `${total} — normal ground conditions`
         : `${total} — wet ground, so a storm adds more flow`
-  const temp = d.freeze
-    ? `Low of ${d.tmin.toFixed(0)}°F — a hard freeze raises flow even without rain`
-    : `Low of ${d.tmin.toFixed(0)}°F — no freeze, so no cold-weather effect`
   return [
     { icon: '🌧️', title: 'Rainfall', text: rain },
     { icon: '💧', title: 'Ground Wetness', text: ground },
-    { icon: '🌡️', title: 'Temperature', text: temp },
   ]
 }
 
@@ -79,7 +75,7 @@ export default function SevenDayForecast({ tool, theme }) {
 
   const load = useCallback((signal) => {
     setStatus('loading')
-    fetchWeather(signal)
+    fetchWeather(tool, signal)
       .then((w) => {
         setWeather(w)
         setRainText(w.rainNext.map((v) => v.toFixed(2)))
@@ -89,7 +85,7 @@ export default function SevenDayForecast({ tool, theme }) {
       .catch((e) => {
         if (e.name !== 'AbortError') setStatus('offline')
       })
-  }, [])
+  }, [tool])
 
   useEffect(() => {
     const ctl = new AbortController()
@@ -156,8 +152,6 @@ export default function SevenDayForecast({ tool, theme }) {
             <span className="text-2xl leading-none" aria-hidden="true">
               {skyOf(day.rain)}
             </span>
-            <span className="ml-3 text-xs font-semibold text-slate-500 dark:text-slate-400">Low</span>
-            <span className="text-lg font-bold tabular-nums text-slate-700 dark:text-slate-100">{day.tmin.toFixed(0)}°F</span>
           </div>
         )}
 
@@ -378,12 +372,11 @@ export default function SevenDayForecast({ tool, theme }) {
               </div>
 
               <div className="mt-3 overflow-x-auto">
-                <table className="w-full min-w-[520px] text-xs">
+                <table className="w-full min-w-[440px] text-xs">
                   <thead>
                     <tr className="text-left text-slate-500 dark:text-slate-400">
                       <th className="py-1 pr-3 font-medium">Day</th>
                       <th className="py-1 pr-3 font-medium">Forecast rain (in)</th>
-                      <th className="py-1 pr-3 text-right font-medium">Low (°F)</th>
                       <th className="py-1 pr-3 text-right font-medium">Predicted flow (MGD)</th>
                       <th className="py-1 text-right font-medium">Likely range (MGD)</th>
                     </tr>
@@ -409,10 +402,6 @@ export default function SevenDayForecast({ tool, theme }) {
                               value={text}
                               onChange={(e) => setRain(i, e.target.value)}
                             />
-                          </td>
-                          <td className="py-1.5 pr-3 text-right">
-                            {d ? d.tmin.toFixed(0) : '—'}
-                            {d?.freeze && <span className="text-danger-dark dark:text-danger-light"> freeze</span>}
                           </td>
                           <td className="py-1.5 pr-3 text-right text-sm font-semibold text-slate-900 dark:text-slate-50">
                             {fmt.mgd(d?.flow)}
@@ -535,6 +524,14 @@ export default function SevenDayForecast({ tool, theme }) {
               />
               <span className="text-base font-extrabold tabular-nums">{fmt.mgd(d?.flow)}</span>
               <span className={`-mt-1 text-[10px] font-medium ${on ? 'text-white/70' : 'text-slate-500 dark:text-slate-400'}`}>MGD</span>
+              {d && (
+                <span
+                  title="Likely range (80%)"
+                  className={`whitespace-nowrap text-[10px] font-semibold tabular-nums ${on ? 'text-white/85' : 'text-slate-500 dark:text-slate-400'}`}
+                >
+                  {fmt.mgd(d.lo)}–{fmt.mgd(d.hi)}
+                </span>
+              )}
             </button>
           )
         })}
@@ -585,7 +582,7 @@ export default function SevenDayForecast({ tool, theme }) {
             </div>
             <p className="px-5 pb-5 pt-3 text-[11px] leading-snug text-slate-400 dark:text-slate-500">
               {prev
-                ? `Calculated now from the rain and temperature recorded for these days and a dry-weather flow of ${fmt.mgd(level)} MGD; no measured plant flow is available for them. The interval is where 8 in 10 past predictions landed around the measured flow.`
+                ? `Calculated now from the rain recorded for these days and a dry-weather flow of ${fmt.mgd(level)} MGD; no measured plant flow is available for them. The interval is where 8 in 10 past predictions landed around the measured flow.`
                 : 'Enter the plant inputs in the breakdown above to see these days.'}
             </p>
           </section>
@@ -629,7 +626,6 @@ function DayTooltip({ active, payload, theme }) {
         { label: 'Predicted flow', value: `${fmt.mgd(d.flow)} MGD`, color: theme.predicted },
         { label: 'Likely range', value: `${fmt.mgd(d.lo)} – ${fmt.mgd(d.hi)} MGD` },
         { label: 'Forecast rain', value: `${d.rain.toFixed(2)} in`, color: theme.curveDry },
-        { label: 'Low', value: `${d.tmin.toFixed(0)} °F` },
       ]}
     />
   )

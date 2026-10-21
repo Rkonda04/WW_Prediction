@@ -2,12 +2,14 @@ import { useState } from 'react'
 import bundle from './data/predictions.json'
 import ActualVsPredicted from './components/ActualVsPredicted'
 import SevenDayForecast from './components/SevenDayForecast'
+import Login from './components/Login'
 import { cssVar } from './lib/metrics'
 
 const { forecast, predictions, model } = bundle
 
 export default function Dashboard() {
   const [page, setPage] = useState('forecast')
+  const [loggedIn, setLoggedIn] = useState(false)
 
   // Chart marks are SVG, so they read their colors from the page's custom properties.
   const [theme] = useState(readTheme)
@@ -24,11 +26,24 @@ export default function Dashboard() {
           <div className="text-right">
             <h1 className="text-xl font-bold leading-tight tracking-[-0.3px] text-white">Richmond Regional WWTF</h1>
             <p className="mt-1.5 text-[13px] tracking-[0.2px] text-white/85">Daily Wastewater Flow Forecast</p>
+            {loggedIn && (
+              <button
+                type="button"
+                onClick={() => setLoggedIn(false)}
+                className="mt-1.5 text-xs text-white/70 underline hover:text-white"
+              >
+                Log out
+              </button>
+            )}
           </div>
         </div>
       </header>
 
       <main className="mx-auto w-full max-w-[680px] flex-1 p-5">
+        {!loggedIn ? (
+          <Login onLogin={() => setLoggedIn(true)} />
+        ) : (
+        <>
         {/* Kept mounted while the other page shows, so the plant inputs typed in are not lost. */}
         <div className={page === 'forecast' ? '' : 'hidden'}>
           <SevenDayForecast tool={forecast} theme={theme} />
@@ -43,6 +58,8 @@ export default function Dashboard() {
         </div>
         {page === 'history' && (
           <ActualVsPredicted rows={predictions} model={model} onBack={() => setPage('forecast')} />
+        )}
+        </>
         )}
 
       </main>
