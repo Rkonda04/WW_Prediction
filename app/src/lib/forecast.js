@@ -113,7 +113,7 @@ export function plantToday() {
 
 const WEATHER_URL =
   'https://api.open-meteo.com/v1/forecast?latitude=29.5818&longitude=-95.7608' +
-  '&daily=precipitation_sum,temperature_2m_min&past_days=36&forecast_days=7' +
+  '&daily=precipitation_sum,temperature_2m_min,temperature_2m_max&past_days=36&forecast_days=7' +
   '&timezone=America%2FChicago&precipitation_unit=inch&temperature_unit=fahrenheit'
 
 /**
@@ -140,6 +140,8 @@ export async function fetchWeather(tool, signal) {
     tminPast: tmin.slice(0, n - 7),
     tminPrev: tmin[n - 8],
     tminNext: tmin.slice(n - 7),
+    // Shown on the day page only; the model does not use it.
+    tmaxNext: (daily.temperature_2m_max ?? []).slice(n - 7),
   }
 }
 
