@@ -12,7 +12,6 @@ import {
   YAxis,
 } from 'recharts'
 import { Collapsible, Legend, TooltipShell } from './ui'
-import DailyPattern from './DailyPattern'
 import { fmt } from '../lib/metrics'
 import { addDays, fallbackWeather, fetchWeather, hindcast, plantToday, rollForward } from '../lib/forecast'
 
@@ -136,7 +135,6 @@ export default function SevenDayForecast({ tool, theme }) {
 
   if (open) {
     const vsDry = day ? ((day.flow - level) / level) * 100 : null
-    const tmax = weather?.tmaxNext?.[picked]
     return (
       <div>
         <button
@@ -148,15 +146,7 @@ export default function SevenDayForecast({ tool, theme }) {
         </button>
         <h2 className="text-2xl font-bold tracking-[-0.3px] text-slate-700 dark:text-slate-100">{longDate(dayDate)}</h2>
         {day && (
-          <div className="mb-5 mt-2 flex flex-wrap items-center gap-3">
-            {tmax != null && (
-              <>
-                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Max Temp</span>
-                <span className="mr-3 text-lg font-bold tabular-nums text-slate-700 dark:text-slate-100">
-                  {Math.round(tmax)}°F
-                </span>
-              </>
-            )}
+          <div className="mb-5 mt-2 flex items-center gap-3">
             <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Forecast Rain</span>
             <span className="text-lg font-bold tabular-nums text-slate-700 dark:text-slate-100">{day.rain.toFixed(2)} in</span>
             <span className="text-2xl leading-none" aria-hidden="true">
@@ -192,8 +182,6 @@ export default function SevenDayForecast({ tool, theme }) {
             </div>
           </section>
         )}
-
-        {day && <DailyPattern flow={day.flow} dryLevel={level} color={dayLevel.color} theme={theme} />}
 
         {day && (
           <section className="card mb-5 p-6">
@@ -445,8 +433,7 @@ export default function SevenDayForecast({ tool, theme }) {
           <div className="text-xs font-bold text-slate-700 dark:text-slate-200">About This Prediction</div>
           <p className="mt-1 text-xs leading-snug text-slate-500 dark:text-slate-400">
             Daily totals predicted by the Phase 7 model, trained on Richmond plant flow from 2018 to 2024. The range
-            is where 8 in 10 past predictions landed around the measured flow. Hourly flow is not predicted; the daily
-            pattern chart is a typical shape scaled to the daily total.
+            is where 8 in 10 past predictions landed around the measured flow. Hourly flow is not predicted.
           </p>
         </section>
       </div>
