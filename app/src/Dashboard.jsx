@@ -2,15 +2,11 @@ import { useState } from 'react'
 import bundle from './data/predictions.json'
 import ActualVsPredicted from './components/ActualVsPredicted'
 import SevenDayForecast from './components/SevenDayForecast'
-import { cssVar } from './lib/metrics'
 
 const { forecast, predictions, model } = bundle
 
 export default function Dashboard() {
   const [page, setPage] = useState('forecast')
-
-  // Chart marks are SVG, so they read their colors from the page's custom properties.
-  const [theme] = useState(readTheme)
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -29,9 +25,9 @@ export default function Dashboard() {
       </header>
 
       <main className="mx-auto w-full max-w-[680px] flex-1 p-5">
-        {/* Kept mounted while the other page shows, so the plant inputs typed in are not lost. */}
+        {/* Kept mounted while the other page shows, so the fetched forecast is not refetched. */}
         <div className={page === 'forecast' ? '' : 'hidden'}>
-          <SevenDayForecast tool={forecast} theme={theme} />
+          <SevenDayForecast tool={forecast} />
           <button
             type="button"
             onClick={() => setPage('history')}
@@ -49,21 +45,4 @@ export default function Dashboard() {
 
     </div>
   )
-}
-
-function readTheme() {
-  return {
-    actual: cssVar('--series-actual', '#1E88E5'),
-    predicted: cssVar('--series-predicted', '#E8710A'),
-    band: cssVar('--band-fill', 'rgba(30,136,229,0.10)'),
-    grid: cssVar('--chart-grid', '#E6E8EB'),
-    axis: cssVar('--chart-axis', '#8A9099'),
-    ink: cssVar('--chart-ink', '#1F2933'),
-    surface: cssVar('--chart-surface', '#FFFFFF'),
-    curveDry: cssVar('--curve-dry', '#90BFF0'),
-    curveNormal: cssVar('--curve-normal', '#1E88E5'),
-    curveWet: cssVar('--curve-wet', '#0B4A8F'),
-    good: '#43A047',
-    bad: '#E53935',
-  }
 }
