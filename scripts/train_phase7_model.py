@@ -65,6 +65,9 @@ PHASE6_FEATURES = list(tsm.FEATURE_COLUMNS) + wx.INTERACTION_FEATURES
 MRMS_FEATURES = ["mrms_t", "mrms_lag1"]
 CONTROL = "gauge_rain_x_antecedent"
 HIGH_NO_RAIN_MGD = 3.0  # agreed anomaly rule: no rain and flow above 3 MGD
+SCREEN_FLOW_RECORD_ANOMALIES = True  # split days, one-day dips, freeze spikes (see flow_record_anomalies)
+LOW_K = 0.85  # below this x dry level = implausibly low flow
+DIP_K = 0.65  # one-day dip threshold
 
 
 def fetch_mrms() -> pd.Series:
@@ -115,13 +118,34 @@ def high_flow_no_rain(ts0, om, model_rain):
     return (ts0["Total_Treated_MGD"] > HIGH_NO_RAIN_MGD) & dry2 & nofreeze
 
 
+def flow_record_anomalies(ts0, om, screen_rain):
+    """Rule -> mask for flow-record anomalies, judged from flow and temperature only (never model error):
+      split_day   a day above SPIKE_K x dry level next to a day below LOW_K x dry level -- flow cannot fall
+                  below the dry-weather level the day after a storm, so the meter-reading boundary slipped
+                  and the two days share one storm's volume; both days are dropped.
+      dip_day     one day below DIP_K x dry level with both neighbours above LOW_K x dry level.
+      freeze_day  flow above SPIKE_K x dry level on a hard-freeze day (Tmin < FREEZE_F on t or t-1):
+                  burst pipes / dripping taps, not driven by rain."""
+    level, _ = tsm.rlb.build_recent_level(ts0.assign(Rainfall_in_Corrected=screen_rain))
+    r = ts0["Total_Treated_MGD"] / level
+    tmin = om["temperature_2m_min"]
+    hi, lo = r > tsm.SPIKE_K, r < LOW_K
+    split = (hi & lo.shift(-1, fill_value=False)) | (lo & hi.shift(1, fill_value=False))
+    dip = (r < DIP_K) & (r.shift(1) > LOW_K) & (r.shift(-1) > LOW_K)
+    freeze = hi & ((tmin < tsm.FREEZE_F) | (tmin.shift(1) < tsm.FREEZE_F))
+    return {"split_day": split, "dip_day": dip, "freeze_day": freeze}
+
+
 def build_frame(ts0, om, rain, screen_rain, mrms=None, extra_flag=None):
+    """extra_flag: {rule name: mask} applied after the no-rain spike screen."""
     _, flagged, detail = tsm.apply_screen(ts0, om, screen_rain)
-    if extra_flag is not None:
-        extra = extra_flag & ~flagged
-        detail = pd.concat([detail.assign(Rule="no_rain_spike"),
-                            pd.DataFrame({"Value_MGD": ts0["Total_Treated_MGD"]}).loc[extra].assign(Rule="high_flow_no_rain")]).sort_index()
-        flagged = flagged | extra
+    if extra_flag:
+        parts = [detail.assign(Rule="no_rain_spike")]
+        for rule, mask in extra_flag.items():
+            extra = mask.reindex(ts0.index, fill_value=False).fillna(False).astype(bool) & ~flagged
+            parts.append(pd.DataFrame({"Value_MGD": ts0["Total_Treated_MGD"]}).loc[extra].assign(Rule=rule))
+            flagged = flagged | extra
+        detail = pd.concat(parts).sort_index()
     ts = ts0.assign(Rainfall_in_Corrected=rain)
     ts.loc[flagged, "Total_Treated_MGD"] = np.nan
     feat = wx.add_interactions(tsm.build_feature_frame(ts, om, ts0["Total_Treated_MGD"]))
@@ -132,7 +156,9 @@ def build_frame(ts0, om, rain, screen_rain, mrms=None, extra_flag=None):
 
 def candidates(ts0, om, net_rain, mrms, screen):
     """name -> (frame, feature columns, rain input description)."""
-    extra = high_flow_no_rain(ts0, om, np.fmax(net_rain, mrms))
+    extra = {"high_flow_no_rain": high_flow_no_rain(ts0, om, np.fmax(net_rain, mrms))}
+    if SCREEN_FLOW_RECORD_ANOMALIES:
+        extra.update(flow_record_anomalies(ts0, om, screen))
     f_net, flagged, detail = build_frame(ts0, om, net_rain, screen, mrms, extra)
     f_avg, _, _ = build_frame(ts0, om, (net_rain + mrms) / 2, screen, mrms, extra)
     return {
@@ -265,7 +291,12 @@ def write_findings(all_scores, detail, set_name, cols, params, n_est, cv_rows, i
         "## Spike screen", "",
         f"{len(detail)} days flagged: no rain > 0.1 in on t, t-1, t-2 in any record incl. MRMS, no freeze, "
         "flow > 1.5 x dry level; plus flow > 3 MGD with no rain > 0.1 in on t, t-1 in gauge network / MRMS, "
-        "no freeze (" + ", ".join(d.strftime('%Y-%m-%d') for d in detail.index[detail.get('Rule', pd.Series(dtype=str)) == 'high_flow_no_rain']) + ").", "",
+        "no freeze (" + ", ".join(d.strftime('%Y-%m-%d') for d in detail.index[detail.get('Rule', pd.Series(dtype=str)) == 'high_flow_no_rain']) + ").",
+        "Flow-record anomalies (from flow and temperature only, applied to every year alike): split days "
+        f"(spike next to a below-dry-level day, a meter-reading boundary slip) {int((detail['Rule'] == 'split_day').sum())}, "
+        f"one-day dips below {DIP_K:g} x dry level {int((detail['Rule'] == 'dip_day').sum())}, "
+        f"hard-freeze spikes {int((detail['Rule'] == 'freeze_day').sum())}. "
+        "Rule counts by day: `screened_days.csv`.", "",
         "## Top features", "",
         ", ".join(f"{r.Feature} ({r.Importance:.2f})" for r in importance.head(8).itertuples()), "",
         "## Caveats", "",
