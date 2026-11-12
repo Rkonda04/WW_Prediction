@@ -13,7 +13,7 @@ Backtest (what this script measures):
   * Every start day whose state is complete, in each out-of-sample year --
     2020, 2021, 2022 by the expanding-window CV folds and 2024 held out, each
     year rolled out by a model that never saw it (Phase 7 hyperparameters).
-  * Rain and temperature for the 7 days are the RECORDED values, i.e. a perfect
+  * Rain, temperature and soil moisture for the 7 days are the RECORDED values, i.e. a perfect
     weather forecast. Real forecasts add rainfall error on top of these scores.
   * Scored per lead day against measured flow, beside two no-skill references:
     persistence (yesterday's flow held) and the dry-weather level.
@@ -68,8 +68,9 @@ def rollout(feat: pd.DataFrame, starts: np.ndarray, model, cols) -> np.ndarray:
 
 def valid_starts(feat: pd.DataFrame, cols, year_mask: np.ndarray) -> np.ndarray:
     """Positions with a complete measured state on the start day and weather for all 7 days."""
+    soil = [c for c in cols if c.startswith("soil_")]  # forecast soil moisture, like forecast rain
     exo = feat[["rainfall_t", "rain_lag1", "rain_lag2", "ante_5d", "ante_30d", "days_since_rain",
-                "tmin_t", "tmin_lag1"]].notna().all(axis=1).to_numpy()
+                "tmin_t", "tmin_lag1"] + soil].notna().all(axis=1).to_numpy()
     state = feat[cols].notna().all(axis=1).to_numpy()
     n = len(feat)
     ok = [i for i in np.flatnonzero(year_mask & state) if i + HORIZON <= n and exo[i:i + HORIZON].all()]
@@ -102,6 +103,13 @@ def predict_trees(tool: dict, x: np.ndarray) -> float:
             n = t["l"][n] if x[t["f"][n]] < np.float32(t["t"][n]) else t["r"][n]
         out += t["t"][n]
     return out
+
+
+def soil_normals() -> dict:
+    """Median 07:00 soil moisture by month (m3/m3), used only when the live soil feed cannot be reached."""
+    s = pd.read_csv(wx.SOIL_CSV, parse_dates=["Date"]).set_index("Date")
+    return {d: [round(float(v), 3) for v in s[c].groupby(s.index.month).median()]
+            for d, c in (("0_7", "sm_0_7cm"), ("7_28", "sm_7_28cm"))}
 
 
 def main():
@@ -180,6 +188,7 @@ def main():
                          "flow_mgd": round(float(last["flow_true"]), 3)},
         # Used only when the live weather feed cannot be reached.
         "tmin_normal_f_by_month": [round(float(v), 1) for v in tmin.groupby(tmin.index.month).median()],
+        "soil_normal_by_month": soil_normals(),
         "model": f"Phase 7 production model, fitted {meta['trained_on']}",
     }
     (OUT_DIR / "forecast_tool.json").write_text(json.dumps(tool, separators=(",", ":")), encoding="utf-8")

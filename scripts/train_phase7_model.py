@@ -63,6 +63,10 @@ SHIFTS = [-1, 0, 1]
 
 PHASE6_FEATURES = list(tsm.FEATURE_COLUMNS) + wx.INTERACTION_FEATURES
 MRMS_FEATURES = ["mrms_t", "mrms_lag1"]
+# Soil moisture on the two previous plant-day mornings (07:00), ERA5 0-7 cm and 7-28 cm. Live, the
+# dashboard reads the same depths from the ECMWF IFS forecast (Open-Meteo). Added 2026-11-11: same days,
+# pooled R2 0.674 -> 0.681. A multi-source z-scored index (ERA5 + NOAA CPC) scored 0.670 and was dropped.
+SOIL_FEATURES = ["soil_0_7_lag1", "soil_0_7_lag2", "soil_7_28_lag1", "soil_7_28_lag2"]
 CONTROL = "gauge_rain_x_antecedent"
 HIGH_NO_RAIN_MGD = 3.0  # agreed anomaly rule: no rain and flow above 3 MGD
 SCREEN_FLOW_RECORD_ANOMALIES = True  # split days, one-day dips, freeze spikes (see flow_record_anomalies)
@@ -151,6 +155,9 @@ def build_frame(ts0, om, rain, screen_rain, mrms=None, extra_flag=None):
     feat = wx.add_interactions(tsm.build_feature_frame(ts, om, ts0["Total_Treated_MGD"]))
     if mrms is not None:
         feat["mrms_t"], feat["mrms_lag1"] = mrms, mrms.shift(1)
+    soil = pd.read_csv(wx.SOIL_CSV, parse_dates=["Date"]).set_index("Date").reindex(ts0.index)
+    for depth, col in (("0_7", "sm_0_7cm"), ("7_28", "sm_7_28cm")):
+        feat[f"soil_{depth}_lag1"], feat[f"soil_{depth}_lag2"] = soil[col].shift(1), soil[col].shift(2)
     return feat, flagged, detail
 
 
@@ -161,10 +168,11 @@ def candidates(ts0, om, net_rain, mrms, screen):
         extra.update(flow_record_anomalies(ts0, om, screen))
     f_net, flagged, detail = build_frame(ts0, om, net_rain, screen, mrms, extra)
     f_avg, _, _ = build_frame(ts0, om, (net_rain + mrms) / 2, screen, mrms, extra)
+    soil = SOIL_FEATURES
     return {
         CONTROL: (f_net, PHASE6_FEATURES, "nearby gauge network mean (Phase 6)"),
-        "avg_rain_x_antecedent": (f_avg, PHASE6_FEATURES, "mean of gauge network and MRMS (inches, plant-day aligned)"),
-        "gauge_rain_plus_mrms": (f_net, PHASE6_FEATURES + MRMS_FEATURES,
+        "avg_rain_x_antecedent": (f_avg, PHASE6_FEATURES + soil, "mean of gauge network and MRMS (inches, plant-day aligned)"),
+        "gauge_rain_plus_mrms": (f_net, PHASE6_FEATURES + MRMS_FEATURES + soil,
                                  "gauge network mean as rainfall_t; MRMS area mean as mrms_t / mrms_lag1"),
     }, flagged, detail
 

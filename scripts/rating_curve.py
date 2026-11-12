@@ -69,6 +69,8 @@ def storm(base: pd.DataFrame, cols, model, r: float):
     y["rain_lag1"] = r
     if "mrms_t" in cols:
         y["mrms_t"], y["mrms_lag1"] = 0.0, r
+    # Soil moisture inputs (if any) stay at the pre-storm mornings for both days: the storm-day
+    # morning reading comes before most of the rain.
     y["flow_lag1"] = base["recent_level"] + added_t
     y["excess_lag3"] = base["excess_lag2"]
     y["excess_lag2"] = base["excess_lag1"]

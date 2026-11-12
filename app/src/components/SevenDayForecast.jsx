@@ -24,7 +24,8 @@ const skyOf = (rain) => (rain > 0.1 ? '\u{1F327}\uFE0F' : rain > 0 ? '\u{1F326}\
  * Predicted plant flow for today and the next six days.
  *
  * Runs the Phase 7 production model forward in the browser (src/lib/forecast.js,
- * mirroring scripts/forecast_7day.py) on the Open-Meteo rain forecast for Richmond.
+ * mirroring scripts/forecast_7day.py) on the live Open-Meteo rain, temperature and
+ * soil moisture (ECMWF) feeds for Richmond.
  * The plant flow record is not a live feed, so the run starts from the dry-weather
  * flow at the end of the record, with no storm still draining.
  */
@@ -159,7 +160,14 @@ export default function SevenDayForecast({ tool }) {
       <div className="mt-5 text-center">
         {status === 'offline' && (
           <div className="mb-3 text-xs text-slate-500 dark:text-slate-400">
-            Weather feed unavailable — showing a no-rain forecast
+            {weather
+              ? 'Weather feed did not respond — showing the forecast loaded earlier'
+              : 'Weather feed unavailable — showing a no-rain forecast'}
+          </div>
+        )}
+        {status !== 'loading' && weather?.soil && !weather.soil.live && (
+          <div className="mb-3 text-xs text-slate-500 dark:text-slate-400">
+            Soil moisture feed incomplete — using monthly normal soil moisture for missing days
           </div>
         )}
         <button

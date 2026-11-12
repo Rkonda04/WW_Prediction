@@ -28,9 +28,13 @@ export function predictAdded(tool, x) {
  * @param rainNext  forecast rain for the 7 days
  * @param tminPrev  minimum temperature (F) the day before `start`
  * @param tminNext  forecast minimum temperature for the 7 days
+ * @param soil      { s0, s7 }: 07:00 soil moisture (m3/m3) at 0-7 cm and 7-28 cm, one value per day
+ *                  of rainPast + rainNext (same days, same order)
  */
-export function rollForward(tool, { start, level, slope = 0, flowLag1, excess, rainPast, rainNext, tminPrev, tminNext }) {
+export function rollForward(tool, { start, level, slope = 0, flowLag1, excess, rainPast, rainNext, tminPrev, tminNext, soil }) {
   const rain = [...rainPast, ...rainNext]
+  const s0 = soil?.s0 ?? []
+  const s7 = soil?.s7 ?? []
   const tmin = [tminPrev, ...tminNext]
   const p0 = rainPast.length
   const wet = (v) => v > tool.wet_rain_in
@@ -72,6 +76,11 @@ export function rollForward(tool, { start, level, slope = 0, flowLag1, excess, r
       // Phase 7 also reads MRMS rain; there is one rain forecast, so it feeds both inputs.
       mrms_t: rain[i],
       mrms_lag1: rain[i - 1],
+      // Soil moisture on the two previous mornings (forecast soil for days ahead, like forecast rain).
+      soil_0_7_lag1: s0[i - 1],
+      soil_0_7_lag2: s0[i - 2],
+      soil_7_28_lag1: s7[i - 1],
+      soil_7_28_lag2: s7[i - 2],
     }
     const added = predictAdded(tool, tool.features.map((name) => f[name]))
     const flow = level + added
@@ -116,11 +125,43 @@ const WEATHER_URL =
   '&daily=precipitation_sum,temperature_2m_min&past_days=36&forecast_days=7' +
   '&timezone=America%2FChicago&precipitation_unit=inch&temperature_unit=fahrenheit'
 
+// Soil moisture comes from the ECMWF IFS model (the default forecast blend has none), at the
+// depths the model was trained on (ERA5 0-7 cm and 7-28 cm), read at 07:00 like the plant day.
+const SOIL_URL =
+  'https://api.open-meteo.com/v1/forecast?latitude=29.5818&longitude=-95.7608' +
+  '&hourly=soil_moisture_0_to_7cm,soil_moisture_7_to_28cm&models=ecmwf_ifs' +
+  '&past_days=36&forecast_days=7&timezone=America%2FChicago'
+
+const soilNormal = (tool, depth, iso) => tool.soil_normal_by_month?.[depth]?.[Number(iso.slice(5, 7)) - 1]
+
+/** 07:00 soil moisture for each date in `dates`; any day the feed lacks gets the month's normal. */
+async function fetchSoil(tool, dates, signal) {
+  const byDate = {}
+  try {
+    const res = await fetch(SOIL_URL, { signal })
+    if (res.ok) {
+      const { hourly } = await res.json()
+      hourly.time.forEach((t, j) => {
+        if (t.endsWith('T07:00')) {
+          byDate[t.slice(0, 10)] = [hourly.soil_moisture_0_to_7cm[j], hourly.soil_moisture_7_to_28cm[j]]
+        }
+      })
+    }
+  } catch (e) {
+    if (e.name === 'AbortError') throw e
+  }
+  const pick = (iso, k, depth) => byDate[iso]?.[k] ?? soilNormal(tool, depth, iso)
+  return {
+    s0: dates.map((iso) => pick(iso, 0, '0_7')),
+    s7: dates.map((iso) => pick(iso, 1, '7_28')),
+    live: dates.every((iso) => byDate[iso]?.[0] != null && byDate[iso]?.[1] != null),
+  }
+}
+
 /**
- * Past 36 days and next 7 days of rain and minimum temperature for Richmond, TX
- * (same point and units as scripts/openmeteo_richmond_rainfall.py). Rainfall is
- * required; any missing minimum temperature falls back to the month's normal,
- * since the freeze effect it drives rarely matters here.
+ * Past 36 days and next 7 days of rain, minimum temperature and soil moisture for
+ * Richmond, TX. Rainfall is required; any missing minimum temperature or soil
+ * moisture falls back to the month's normal.
  */
 export async function fetchWeather(tool, signal) {
   const res = await fetch(WEATHER_URL, { signal })
@@ -133,6 +174,7 @@ export async function fetchWeather(tool, signal) {
   const tmin = daily.time.map(
     (iso, j) => daily.temperature_2m_min?.[j] ?? tool.tmin_normal_f_by_month[Number(iso.slice(5, 7)) - 1],
   )
+  const soil = await fetchSoil(tool, daily.time, signal)
   return {
     start: daily.time[n - 7],
     rainPast: daily.precipitation_sum.slice(0, n - 7),
@@ -140,6 +182,7 @@ export async function fetchWeather(tool, signal) {
     tminPast: tmin.slice(0, n - 7),
     tminPrev: tmin[n - 8],
     tminNext: tmin.slice(n - 7),
+    soil,
   }
 }
 
@@ -148,7 +191,8 @@ export async function fetchWeather(tool, signal) {
  * them. No measured flow exists for those days, so the run starts `count` days
  * back at the dry-weather flow and each day follows from the one before.
  */
-export function hindcast(tool, { start, level, rainPast, tminPast }, count = 5) {
+export function hindcast(tool, { start, level, rainPast, tminPast, soil }, count = 5) {
+  const past = rainPast.length
   return rollForward(tool, {
     start: addDays(start, -count),
     level,
@@ -158,6 +202,7 @@ export function hindcast(tool, { start, level, rainPast, tminPast }, count = 5) 
     rainNext: rainPast.slice(-count),
     tminPrev: tminPast[tminPast.length - count - 1],
     tminNext: tminPast.slice(-count),
+    soil: soil && { s0: soil.s0.slice(0, past), s7: soil.s7.slice(0, past) },
   })
 }
 
@@ -169,7 +214,13 @@ export function hindcast(tool, { start, level, rainPast, tminPast }, count = 5) 
 export function fallbackWeather(tool, start, ante30 = 0) {
   const month = (iso) => Number(iso.slice(5, 7)) - 1
   const normal = (iso) => tool.tmin_normal_f_by_month[month(iso)]
+  const dates = Array.from({ length: 36 + tool.horizon }, (_, j) => addDays(start, j - 36))
   return {
+    soil: {
+      s0: dates.map((iso) => soilNormal(tool, '0_7', iso)),
+      s7: dates.map((iso) => soilNormal(tool, '7_28', iso)),
+      live: false,
+    },
     start,
     rainPast: Array.from({ length: 36 }, (_, j) => (j >= 6 && j <= 30 ? ante30 / 25 : 0)),
     tminPast: Array.from({ length: 36 }, (_, j) => normal(addDays(start, j - 36))),
