@@ -12,11 +12,19 @@ export default function Dashboard() {
     <div className="flex min-h-screen flex-col">
       <header className="bg-gradient-to-br from-primary to-primary-dark px-6 py-5 shadow-[0_4px_20px_rgba(74,14,120,0.4)]">
         <div className="mx-auto flex max-w-[680px] items-center justify-between gap-4">
-          <img
-            src={`${import.meta.env.BASE_URL}civitas-logo.png`}
-            alt="Civitas Engineering Group"
-            className="h-[50px] w-auto object-contain brightness-0 invert"
-          />
+          <a
+            href="https://www.civitasengr.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Civitas Engineering Group website"
+            className="shrink-0 transition-opacity hover:opacity-80"
+          >
+            <img
+              src={`${import.meta.env.BASE_URL}civitas-logo.png`}
+              alt="Civitas Engineering Group"
+              className="h-[50px] w-auto object-contain brightness-0 invert"
+            />
+          </a>
           <div className="text-right">
             <h1 className="text-xl font-bold leading-tight tracking-[-0.3px] text-white">Richmond Regional WWTF</h1>
             <p className="mt-1.5 text-[13px] tracking-[0.2px] text-white/85">Daily Wastewater Flow Forecast</p>
